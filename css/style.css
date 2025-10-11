@@ -268,11 +268,23 @@ h2.fw-bold {
 
 /* ============== Button Footer ============= */
 
-/* === TOGGLE (Round Trip) === */
+.btn-group {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+#backBtn1 {
+  background-color: #222222;
+  color: #fff;
+  border: 1px solid #333;
+}
+
 .btn-main {
   background-color: var(--main-color);
   color: #000;
-  font-weight: 600;
   font-size: 16px;
   width: 195.89px;
   height: 60px;
@@ -284,6 +296,7 @@ h2.fw-bold {
   padding: 0 56px;
   cursor: pointer;
   transition: all 0.25s ease;
+  white-space: nowrap;
 }
 
 .btn-main:hover {
@@ -291,7 +304,15 @@ h2.fw-bold {
   transform: translateY(-1px);
 }
 
-/* === TOGGLE (cao hơn, màu global main) === */
+/* === Container cho Toggle và Button === */
+.footer-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 24px;
+}
+
 .toggle-switch {
   display: flex;
   align-items: center;
@@ -337,11 +358,202 @@ h2.fw-bold {
   user-select: none;
 }
 
-/* === Container cho Toggle và Button === */
-.footer-actions {
+/* =============== Card car ============== */
+
+.car-card-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.car-card-item {
+  background: #222222;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 0 20px;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  min-height: 150px;
+}
+.car-card-item:hover {
+  border-color: var(--main-color);
+  background: #2a2a2a;
+}
+
+.car-card-item .car-image {
+  width: 200px;
+  height: auto;
+  border-radius: 10px;
+  object-fit: contain;
+  display: flex;
+  align-self: center;
+}
+
+.car-info {
+  flex: 1;
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 28px;
+  height: 100%;
+}
+
+.car-name {
+  font-size: 21px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.car-details {
+  display: flex;
+  align-items: center;
   gap: 16px;
-  margin-top: 24px;
+  font-size: 14px;
+  color: var(--input-color);
+  margin-top: 5px;
+}
+
+.car-details span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.icon-book-car {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+  margin-right: 4px;
+  vertical-align: middle;
+}
+
+.car-desc {
+  font-size: 14px;
+  color: var(--input-color);
+  margin-top: 5px;
+  margin-bottom: 0;
+}
+
+.car-price {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 80px;
+}
+
+.car-price span {
+  color: var(--main-color);
+  font-weight: 600;
+  font-size: 18px;
+}
+
+/* Ẩn input radio gốc */
+.car-checkbox {
+  display: none;
+}
+
+/* Vòng tròn chọn */
+.radio {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  transition: all 0.2s ease;
+}
+
+/* Khi được chọn */
+.car-checkbox:checked + img + .car-info + .car-price .radio {
+  background-color: var(--main-color);
+  border-color: var(--main-color);
+}
+
+.car-checkbox:checked ~ img,
+.car-checkbox:checked ~ .car-info,
+.car-checkbox:checked ~ .car-price {
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.car-checkbox:checked ~ img,
+.car-checkbox:checked ~ .car-info,
+.car-checkbox:checked ~ .car-price {
+  transform: scale(1.02);
+}
+
+.car-card-item:active {
+  transform: scale(0.98); /* Hiệu ứng nhấn xuống nhẹ khi click */
+}
+
+.car-card-item {
+  transition: all 0.3s ease;
+}
+
+/* ---------- Optional Service Card ---------- */
+
+.option-card-container {
+  margin-top: 15px;
+}
+
+.option-card {
+  background: #222222;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid #333;
+  min-height: 100px;
+}
+
+.option-card:hover {
+  border-color: var(--main-color);
+  background: #2a2a2a;
+  /* transform: translateY(-2px); */
+}
+
+/* Checkbox */
+.option-checkbox {
+  width: 18px;
+  height: 18px;
+  margin-right: 20px;
+  accent-color: var(--main-color);
+  cursor: pointer;
+}
+
+/* Nội dung bên trái */
+.option-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.option-title {
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.option-desc {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--input-color);
+  margin-top: 6px;
+  line-height: 1.5;
+  margin-bottom: 0;
+}
+
+/* Giá */
+.option-price {
+  color: var(--main-color);
+  font-weight: 600;
+  font-size: 18px;
+  margin-left: 20px;
 }

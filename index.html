@@ -127,7 +127,7 @@
           </div>
           <div class="col-md-3">
             <label class="form-label text-light">
-              Child seat: <span class="text-danger">*</span>
+              Child seat <span class="text-danger">*</span>
             </label>
             <input
               type="number"
@@ -168,17 +168,142 @@
 
       <!-- Step 2 -->
       <div class="step-content">
-        <div class="text-center">
-          <h4>Choose your vehicle</h4>
-          <p>Vehicle selection coming soon...</p>
-        </div>
-        <div class="d-flex justify-content-between mt-4">
-          <button class="btn btn-outline-light rounded-pill px-4" id="backBtn1">
-            Back
-          </button>
-          <button class="btn btn-warning rounded-pill px-4" id="nextToPayment">
-            Next
-          </button>
+        <div class="row g-4-5">
+          <div class="col-md-3">
+            <label class="form-label text-light">
+              First Name <span class="text-danger">*</span>
+            </label>
+            <input
+              type="text"
+              class="form-control custom-input"
+              placeholder="David"
+            />
+          </div>
+          <div class="col-md-3">
+            <label class="form-label text-light">
+              Last Name <span class="text-danger">*</span>
+            </label>
+            <input
+              type="text"
+              class="form-control custom-input"
+              placeholder="David"
+            />
+          </div>
+          <div class="col-md-3">
+            <label class="form-label text-light">Email</label>
+            <input
+              type="text"
+              class="form-control custom-input"
+              placeholder="manhdeptrai@gmail.com"
+            />
+          </div>
+          <div class="col-md-3">
+            <label class="form-label text-light">Phone Number </label>
+            <input
+              type="text"
+              class="form-control custom-input"
+              placeholder="Phone"
+            />
+          </div>
+
+          <!-- Card car -->
+          <div class="car-card-container">
+            <label class="car-card-item">
+              <input
+                type="radio"
+                name="selectedCar"
+                class="car-checkbox"
+                checked
+              />
+              <img
+                src="assests/png/urus_1.png"
+                alt="Lamborghini Urus"
+                class="car-image"
+              />
+              <div class="car-info">
+                <h3 class="car-name">Lamborghini Urus</h3>
+                <div class="car-details">
+                  <span>
+                    <img src="assests/svg/seat.svg" class="icon-book-car" />
+                    4 Seats
+                  </span>
+                  <span>
+                    <img src="assests/svg/auto.svg" class="icon-book-car" />
+                    Auto
+                  </span>
+                  <span>
+                    <img src="assests/svg/bag.svg" class="icon-book-car" />
+                    2 Bags
+                  </span>
+                </div>
+                <p class="car-desc">Carries up to 4 passengers.</p>
+              </div>
+              <div class="car-price">
+                <span>$750</span>
+                <div class="radio"></div>
+              </div>
+            </label>
+
+            <label class="car-card-item">
+              <input type="radio" name="selectedCar" class="car-checkbox" />
+              <img
+                src="assests/png/urus_2.png"
+                alt="Lamborghini Urus"
+                class="car-image"
+              />
+              <div class="car-info">
+                <h3 class="car-name">Lamborghini Urus</h3>
+                <div class="car-details">
+                  <span>
+                    <img src="assests/svg/seat.svg" class="icon-book-car" />
+                    4 Seats
+                  </span>
+                  <span>
+                    <img src="assests/svg/auto.svg" class="icon-book-car" />
+                    Auto
+                  </span>
+                  <span>
+                    <img src="assests/svg/bag.svg" class="icon-book-car" />
+                    2 Bags
+                  </span>
+                </div>
+                <p class="car-desc">Carries up to 4 passengers.</p>
+              </div>
+              <div class="car-price">
+                <span>$850</span>
+                <div class="radio"></div>
+              </div>
+            </label>
+          </div>
+
+          <!-- Optional Service Card -->
+
+          <div class="option-card-container">
+            <label class="option-card">
+              <input type="checkbox" class="option-checkbox" />
+              <div class="option-info">
+                <h3 class="option-title">Self-drive Insurance</h3>
+                <p class="option-desc">
+                  Optional self-drive insurance covers the vehicle and
+                  passengers in case of accidents or damage. Recommended for all
+                  rentals.
+                </p>
+              </div>
+              <div class="option-price">
+                <span>$20</span>
+              </div>
+            </label>
+          </div>
+
+          <div class="btn-group">
+            <button class="btn-main" id="backBtn1">
+              <img src="assests/svg/arrow.svg" style="margin-right: 10px" />
+              Back
+            </button>
+            <button type="button" class="btn-main" id="nextToPayment">
+              Book This Car
+            </button>
+          </div>
         </div>
       </div>
 
