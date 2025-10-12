@@ -2,6 +2,8 @@
   --main-color: #f5b754;
   --input-color: #808080;
   --text-color: #fff;
-  --font-size-base: 16px;
+  --font-size-base: 14px;
   --border-radius-input: 24px;
+  --background-card: #222222;
+  --border-color: #333333;
 }
