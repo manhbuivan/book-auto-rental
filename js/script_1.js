@@ -21,16 +21,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const lines = document.querySelectorAll(".line");
     const rootStyles = getComputedStyle(document.documentElement);
     const mainColor = rootStyles.getPropertyValue("--main-color").trim();
+    const inactiveColor = "#BBBCBE";
 
     lines.forEach((line, i) => {
-      if (index === 0) {
-        line.style.backgroundColor = "#BBBCBE";
-      } else {
-        line.style.backgroundColor = i < index ? mainColor : inactiveColor;
-      }
+      line.style.backgroundColor = i < index ? mainColor : inactiveColor;
     });
   };
-
   // Next buttons
   document.getElementById("nextBtn").addEventListener("click", () => {
     if (currentStep < contents.length - 1) {

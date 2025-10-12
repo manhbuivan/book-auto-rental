@@ -30,7 +30,7 @@
             class="step-icon"
             alt="Vehicle icon"
           />
-          <p>Trip Details</p>
+          <p>Trip Information</p>
         </div>
         <div class="line"></div>
         <div class="step">
@@ -55,120 +55,7 @@
       <!-- Step 1 -->
       <form id="tripForm" class="step-content active">
         <div class="row g-4-5">
-          <!-- Pick up -->
-          <div class="col-md-5">
-            <label class="form-label text-light">
-              Pick up location <span class="text-danger">*</span>
-            </label>
-            <input
-              type="text"
-              class="form-control custom-input"
-              placeholder="Enter Address, Point of Interest or Airpod Code"
-            />
-          </div>
-
-          <!-- Drop off -->
-          <div class="col-md-7 dropoff-section">
-            <label class="form-label text-light">
-              Drop off location <span class="text-danger">*</span>
-            </label>
-
-            <div id="dropoffList">
-              <div class="dropoff-item d-flex align-items-center">
-                <div class="input-wrapper position-relative flex-grow-1">
-                  <input
-                    type="text"
-                    class="form-control dropoff-input"
-                    placeholder="Enter Address, Point of Interest or Airpod Code"
-                  />
-                </div>
-                <button type="button" id="addStop" class="btn add-btn ms-3">
-                  + Add stop
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Date, time, airline -->
-          <div class="col-md-4">
-            <label class="form-label text-light">
-              Date of Service <span class="text-danger">*</span>
-            </label>
-            <input type="date" class="form-control custom-input" />
-          </div>
-          <div class="col-md-4">
-            <label class="form-label text-light">
-              Time of Service <span class="text-danger">*</span>
-            </label>
-            <input type="time" class="form-control custom-input" />
-          </div>
-          <div class="col-md-4">
-            <label class="form-label text-light">
-              Airline <span class="text-danger">*</span>
-            </label>
-            <input
-              type="text"
-              class="form-control custom-input"
-              placeholder="Your phone number"
-            />
-          </div>
-
-          <!-- Seats -->
-          <div class="col-md-3">
-            <label class="form-label text-light">
-              Passengers <span class="text-danger">*</span>
-            </label>
-            <input
-              type="number"
-              class="form-control custom-input"
-              min="1"
-              placeholder="Number"
-            />
-          </div>
-          <div class="col-md-3">
-            <label class="form-label text-light">
-              Child seat <span class="text-danger">*</span>
-            </label>
-            <input
-              type="number"
-              class="form-control custom-input"
-              min="0"
-              placeholder="Number"
-            />
-          </div>
-          <div class="col-md-3">
-            <label class="form-label text-light">Car seat (+15$)</label>
-            <input
-              type="number"
-              class="form-control custom-input"
-              min="0"
-              placeholder="Number"
-            />
-          </div>
-          <div class="col-md-3">
-            <label class="form-label text-light">Booster seat (+10$)</label>
-            <input
-              type="number"
-              class="form-control custom-input"
-              min="0"
-              placeholder="Number"
-            />
-          </div>
-
-          <div class="footer-actions">
-            <div class="toggle-switch">
-              <input type="checkbox" id="roundTrip" />
-              <label for="roundTrip">Round Trip</label>
-            </div>
-
-            <button type="button" class="btn-main" id="nextBtn">Next</button>
-          </div>
-        </div>
-      </form>
-
-      <!-- Step 2 -->
-      <div class="step-content">
-        <div class="row g-4-5">
+          <!-- Name -->
           <div class="col-md-3">
             <label class="form-label text-light">
               First Name <span class="text-danger">*</span>
@@ -206,6 +93,72 @@
             />
           </div>
 
+          <!-- Address -->
+          <div class="col-md-12">
+            <label class="form-label text-light">Address</label>
+            <input
+              type="text"
+              class="form-control custom-input"
+              placeholder="Phone"
+            />
+          </div>
+
+          <!-- Pick, Drop up Date, time -->
+          <div class="col-md-6">
+            <label class="form-label text-light">
+              Pick Up Date <span class="text-danger">*</span>
+            </label>
+            <div class="flex-date">
+              <input type="date" class="form-control custom-input" />
+              <span class="text-light">-</span>
+              <input type="time" class="form-control custom-input" />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label text-light">
+              Drop Up Date <span class="text-danger">*</span>
+            </label>
+            <div class="flex-date">
+              <input type="date" class="form-control custom-input" />
+              <span class="text-light">-</span>
+              <input type="time" class="form-control custom-input" />
+            </div>
+          </div>
+
+          <!-- Seats -->
+          <div class="col-md-6">
+            <label class="form-label text-light">
+              Pick Up Location <span class="text-danger">*</span>
+            </label>
+            <select class="form-control custom-input" style="color: #fff">
+              <option value="" disabled selected>Select Location</option>
+              <option value="airport">Airport</option>
+              <option value="city-center">City Center</option>
+              <option value="hotel">Hotel</option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label text-light">
+              Pick Up Event <span class="text-danger">*</span>
+            </label>
+            <select class="form-control custom-input" style="color: #fff">
+              <option value="" disabled selected>Select Event</option>
+              <option value="conference">Conference</option>
+              <option value="wedding">Wedding</option>
+              <option value="vacation">Vacation</option>
+            </select>
+          </div>
+
+          <div class="btn-group">
+            <button type="button" class="btn-main" id="nextBtn">Next</button>
+          </div>
+        </div>
+      </form>
+
+      <!-- Step 2 -->
+      <div class="step-content">
+        <div class="row g-4-5">
           <!-- Card car -->
           <div class="car-card-container">
             <label class="car-card-item">
@@ -272,6 +225,25 @@
               <div class="car-price">
                 <span>$850</span>
                 <div class="radio"></div>
+              </div>
+            </label>
+          </div>
+
+          <!-- Optional Service Card -->
+
+          <div class="option-card-container">
+            <label class="option-card">
+              <input type="checkbox" class="option-checkbox" />
+              <div class="option-info">
+                <h3 class="option-title">Self-drive Insurance</h3>
+                <p class="option-desc">
+                  Optional self-drive insurance covers the vehicle and
+                  passengers in case of accidents or damage. Recommended for all
+                  rentals.
+                </p>
+              </div>
+              <div class="option-price">
+                <span>$20</span>
               </div>
             </label>
           </div>
@@ -386,6 +358,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/script_1.js"></script>
+    <script src="js/script_2.js"></script>
   </body>
 </html>
