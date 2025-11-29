@@ -27,8 +27,86 @@ document.addEventListener("DOMContentLoaded", () => {
       line.style.backgroundColor = i < index ? mainColor : inactiveColor;
     });
   };
+
+  async function callFindCarsAPI() {
+    try {
+      const payload = {
+        passengers: 2,
+        childSeats: 0,
+        boosterSeats: 0,
+        distance: 10,
+        pickupDistance: 5,
+        returnDistance: 5,
+        isRoundTrip: true,
+        outboundPickupDateTime: "2025-12-12T00:00:00.000Z",
+        returnPickupDateTime: "2025-12-15T00:00:00.000Z",
+      };
+
+      const res = await fetch(
+        "https://machshuttle.hayho.org/api/cars/find-by-seats",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Client-Timezone-Offset": new Date().getTimezoneOffset() + "",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error("API Error:", errorText);
+        alert("Call API lỗi: " + errorText);
+        return;
+      }
+
+      const data = await res.json();
+      renderCars(data.data);
+
+      console.log("API Data:", data);
+
+      // 👉 Nếu bạn muốn fill data xe vào step 2, để tôi viết luôn
+    } catch (err) {
+      console.error("Fetch Error:", err);
+    }
+  }
+
+  function renderCars(list) {
+    const container = document.getElementById("carList");
+    container.innerHTML = ""; // clear danh sách cũ
+
+    list.forEach((car, index) => {
+      container.innerHTML += `
+      <label class="car-card-item">
+        <input type="radio" name="selectedCar" class="car-checkbox" ${
+          index === 0 ? "checked" : ""
+        } />
+
+        <img src="${car.image || "assests/png/urus_1.png"}" class="car-image" />
+
+        <div class="car-info">
+          <h3 class="car-name">${car.name}</h3>
+          <div class="car-details">
+            <span><img src="assests/svg/seat.svg" /> ${car.seats} Seats</span>
+            <span><img src="assests/svg/auto.svg" /> Auto</span>
+            <span><img src="assests/svg/bag.svg" /> ${car.bags} Bags</span>
+          </div>
+          <p class="car-desc">Carries up to ${car.seats} passengers.</p>
+        </div>
+
+        <div class="car-price">
+          <span>$${car.price}</span>
+          <div class="radio"></div>
+        </div>
+      </label>
+    `;
+    });
+  }
+
   // Next buttons
-  document.getElementById("nextBtn").addEventListener("click", () => {
+  document.getElementById("nextBtn").addEventListener("click", async () => {
+    await callFindCarsAPI();
     if (currentStep < contents.length - 1) {
       currentStep++;
       showStep(currentStep);
