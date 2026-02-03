@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
     startPoint: {
       lat: 38.8977,
       lng: -77.0365,
-      address: "The White House, 1600 Pennsylvania Avenue NW, Washington, DC"
+      address: "The White House, 1600 Pennsylvania Avenue NW, Washington, DC",
     },
     pickup: null,
     dropoffs: [],
@@ -41,48 +41,52 @@ document.addEventListener("DOMContentLoaded", () => {
       style: "currency",
       currency: "USD",
       minimumFractionDigits: 2,
-      maximumFractionDigits: 2
+      maximumFractionDigits: 2,
     });
   }
 
   // ============== coupon logic ================
-  document.querySelector("#applyCouponBtn").addEventListener("click", function() {
-    const couponInput = document.querySelector("#couponInput");
-    const couponCode = couponInput.value.trim().toUpperCase();
-    const discountElem = document.querySelector("#discountAmount");
-    const totalElem = document.querySelector("#totalPrice");
+  document
+    .querySelector("#applyCouponBtn")
+    .addEventListener("click", function () {
+      const couponInput = document.querySelector("#couponInput");
+      const couponCode = couponInput.value.trim().toUpperCase();
+      const discountElem = document.querySelector("#discountAmount");
+      const totalElem = document.querySelector("#totalPrice");
 
-    // Lấy thông tin xe đã chọn
-    const selectedCarRadio = document.querySelector('input[name="selectedCar"]:checked');
+      // Lấy thông tin xe đã chọn
+      const selectedCarRadio = document.querySelector(
+        'input[name="selectedCar"]:checked'
+      );
 
-    const carCard = selectedCarRadio.closest(".car-card-item");
-    const carData = JSON.parse(carCard.dataset.carData || '{}');
+      const carCard = selectedCarRadio.closest(".car-card-item");
+      const carData = JSON.parse(carCard.dataset.carData || "{}");
 
-    // Kiểm tra mã khuyến mãi của xe
-    const validPromotionCode = carData.promotionCode;
-    const discountAmount = carData.discountAmount || 0;
-    bookingData.promotionCode = couponCode;
+      // Kiểm tra mã khuyến mãi của xe
+      const validPromotionCode = carData.promotionCode;
+      const discountAmount = carData.discountAmount || 0;
+      bookingData.promotionCode = couponCode;
 
-    // So sánh mã người dùng nhập với mã của xe
-    // if (couponCode === validPromotionCode) {
-    //   bookingData.promotionCode = couponCode;
-    //   if (discountElem) {
-    //     discountElem.textContent = `-${formattedPrice(discountAmount)}`;
-    //   };
-      
-    //   if (totalElem && (bookingData.totalPrice >= discountAmount)) {
-    //     totalElem.textContent = `${formattedPrice(bookingData.totalPrice - discountAmount)}`
-    //   };
+      // So sánh mã người dùng nhập với mã của xe
+      // if (couponCode === validPromotionCode) {
+      //   bookingData.promotionCode = couponCode;
+      //   if (discountElem) {
+      //     discountElem.textContent = `-${formattedPrice(discountAmount)}`;
+      //   };
 
-    //   alert(`Coupon applied successfully! You saved ${formattedPrice(discountAmount)}`);
-    // } else {
-    //   bookingData.promotionCode = couponCode;
-    //   alert("Invalid coupon code!");
-    //   if (discountElem) discountElem.textContent = "-$0";
-    //   if (totalElem) totalElem.textContent = `${formattedPrice(bookingData.totalPrice)}`;
-    //   couponInput.focus();
-    // }
-  })
+      //   if (totalElem && (bookingData.totalPrice >= discountAmount)) {
+      //     totalElem.textContent = `${formattedPrice(bookingData.totalPrice - discountAmount)}`
+      //   };
+
+      //   alert(`Coupon applied successfully! You saved ${formattedPrice(discountAmount)}`);
+      // } else {
+      //   bookingData.promotionCode = couponCode;
+      //   alert("Invalid coupon code!");
+      //   if (discountElem) discountElem.textContent = "-$0";
+      //   if (totalElem) totalElem.textContent = `${formattedPrice(bookingData.totalPrice)}`;
+      //   couponInput.focus();
+      // }
+    });
 
   // ============== OSRM Distance Calculator ================
   async function calculateDistanceGoogle(lat1, lng1, lat2, lng2) {
@@ -272,8 +276,8 @@ document.addEventListener("DOMContentLoaded", () => {
         totalDistance: bookingData.totalDistance,
         dropoffPoints: bookingData.dropoffPoints,
         airline: bookingData.airline,
-      }
-      console.log('payload :>> ', payload);
+      };
+      console.log("payload :>> ", payload);
       const res = await fetch(
         "https://machshuttle.hayho.org/api/bookings/create",
         {
@@ -289,7 +293,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await res.json();
 
       if (data.success) {
-        paymentBooking(data.data,'https://machshuttle.hayho.org/');
+        paymentBooking(data.data, "https://machshuttle.hayho.org/");
       } else {
         alert(data.message || "Booking failed!");
       }
@@ -298,13 +302,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  async function paymentBooking(bookingId = 0, url = '') {
+  async function paymentBooking(bookingId = 0, url = "") {
     try {
       const payload = {
         bookingId,
         successUrl: url,
         cancelUrl: url,
-      }
+      };
       const res = await fetch(
         "https://machshuttle.hayho.org/api/payments/stripe/booking/checkout",
         {
@@ -339,10 +343,12 @@ document.addEventListener("DOMContentLoaded", () => {
         id: car.id,
         promotionCode: car.promotionCode || "",
         discountAmount: car.discountAmount || 0,
-        finalPrice: car.finalPrice || 0
+        finalPrice: car.finalPrice || 0,
       });
       container.innerHTML += `
-      <label class="car-card-item" data-car-id="${car.id}" data-car-data='${carDataJson}'>
+      <label class="car-card-item" data-car-id="${
+        car.id
+      }" data-car-data='${carDataJson}'>
         <div class="item-left">
           <input type="radio" name="selectedCar" class="car-checkbox" ${
             index === 0 ? "checked" : ""
@@ -402,24 +408,29 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const dropoffLocationElem = step3Content.querySelector("#dropoffLocation");
-    if (dropoffLocationElem && selectedLocations.dropoffs && selectedLocations.dropoffs.length > 0) {
-      const dropoffAddresses = selectedLocations.dropoffs.map(d => d.address).join(' - ');
+    if (
+      dropoffLocationElem &&
+      selectedLocations.dropoffs &&
+      selectedLocations.dropoffs.length > 0
+    ) {
+      const dropoffAddresses = selectedLocations.dropoffs
+        .map((d) => d.address)
+        .join(" - ");
       dropoffLocationElem.innerHTML = `<strong class="text-pickup">Drop off location:</strong> ${dropoffAddresses}`;
     }
 
     //Fill dates
     const pickupDateElem = step3Content.querySelector("#pickupDate");
     if (pickupDateElem && bookingData.pickupDate && bookingData.pickupTime) {
-      const formattedDate = new Date(`${bookingData.pickupDate}T${bookingData.pickupTime}`).toLocaleString(
-        "en-US",
-        {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-        }
-      );
+      const formattedDate = new Date(
+        `${bookingData.pickupDate}T${bookingData.pickupTime}`
+      ).toLocaleString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
       pickupDateElem.innerHTML = `<strong class="text-pickup">Date of Service:</strong> ${formattedDate}`;
     }
 
@@ -471,7 +482,8 @@ document.addEventListener("DOMContentLoaded", () => {
       if (subtotalElem) subtotalElem.textContent = carPrice;
       const boosterSeatPrice = step3Content.querySelector("#boosterSeatPrice");
       const boosterSeat = bookingData.boosterSeats * 10;
-      if (boosterSeatPrice) boosterSeatPrice.textContent = formattedPrice(boosterSeat || 0);
+      if (boosterSeatPrice)
+        boosterSeatPrice.textContent = formattedPrice(boosterSeat || 0);
 
       const subtotal = parseFloat(carPrice.replace(/[$,]/g, ""));
       const total = subtotal + boosterSeat;
@@ -511,7 +523,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (isRoundTrip) {
       const returnDateInput = document.getElementById("returnDateInput");
       const returnTimeInput = document.getElementById("returnTimeInput");
-      
+
       if (!returnDateInput?.value || !returnTimeInput?.value) {
         returnDateInput?.classList.add("is-invalid");
         returnTimeInput?.classList.add("is-invalid");
@@ -519,13 +531,15 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         returnDateInput.classList.remove("is-invalid");
         returnTimeInput.classList.remove("is-invalid");
-        
+
         // Validate return must be after outbound
         const fromDate = document.getElementById("fromDateInput").value;
         const fromTime = document.getElementById("fromTimeInput").value;
         const outbound = new Date(`${fromDate}T${fromTime}`);
-        const returnDT = new Date(`${returnDateInput.value}T${returnTimeInput.value}`);
-        
+        const returnDT = new Date(
+          `${returnDateInput.value}T${returnTimeInput.value}`
+        );
+
         if (returnDT <= outbound) {
           returnDateInput.classList.add("is-invalid");
           returnTimeInput.classList.add("is-invalid");
@@ -550,15 +564,20 @@ document.addEventListener("DOMContentLoaded", () => {
       const fromTime = document.getElementById("fromTimeInput").value;
       bookingData.pickupDate = fromDate;
       bookingData.pickupTime = fromTime;
-      bookingData.pickupDateTime = new Date(`${fromDate}T${fromTime}`).toISOString();
-
+      bookingData.pickupDateTime = new Date(
+        `${fromDate}T${fromTime}`
+      ).toISOString();
 
       if (isRoundTrip) {
         const returnDate = document.getElementById("returnDateInput").value;
         const returnTime = document.getElementById("returnTimeInput").value;
-        bookingData.returnPickupDateTime = new Date(`${returnDate}T${returnTime}`).toISOString();
+        bookingData.returnPickupDateTime = new Date(
+          `${returnDate}T${returnTime}`
+        ).toISOString();
       } else {
-        bookingData.returnPickupDateTime = new Date(new Date(bookingData.pickupDateTime).getTime() + 24 * 60 * 60 * 1000).toISOString();
+        bookingData.returnPickupDateTime = new Date(
+          new Date(bookingData.pickupDateTime).getTime() + 24 * 60 * 60 * 1000
+        ).toISOString();
       }
       // Lưu dropoff points
       bookingData.dropoffPoints = selectedLocations.dropoffs.map(
@@ -606,7 +625,8 @@ document.addEventListener("DOMContentLoaded", () => {
       bookingData.email = email.value.trim();
     }
 
-    const phoneRegex = /^[\+]?1?[-.\s]?(\([0-9]{3}\)|[0-9]{3})[-.\s]?[0-9]{3}[-.\s]?[0-9]{4}$/;
+    const phoneRegex =
+      /^[\+]?1?[-.\s]?(\([0-9]{3}\)|[0-9]{3})[-.\s]?[0-9]{3}[-.\s]?[0-9]{4}$/;
     if (!phone.value.trim() || !phoneRegex.test(phone.value.trim())) {
       phone.classList.add("is-invalid");
       valid = false;
@@ -626,9 +646,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ============== Round Trip Toggle ================
   const roundTripCheckbox = document.getElementById("roundTrip");
-  
+
   const returnDateTimeHTML = `
-    <div class="col-md-4 return-date-section" style="display: none;">
+    <div class="col-md-4 return-date-section">
       <label class="form-label text-light">
         Return Date <span class="text-danger">*</span>
       </label>
@@ -638,7 +658,7 @@ document.addEventListener("DOMContentLoaded", () => {
         class="form-control custom-input"
       />
     </div>
-    <div class="col-md-4 return-date-section" style="display: none;">
+    <div class="col-md-4 return-date-section">
       <label class="form-label text-light">
         Return Time <span class="text-danger">*</span>
       </label>
@@ -655,18 +675,85 @@ document.addEventListener("DOMContentLoaded", () => {
 
   roundTripCheckbox.addEventListener("change", (e) => {
     const returnSections = document.querySelectorAll(".return-date-section");
+    const isChecked = e.target.checked;
+
     returnSections.forEach((section) => {
-      section.style.display = e.target.checked ? "block" : "none";
+      if (isChecked) {
+        section.classList.add("visible");
+      } else {
+        section.classList.remove("visible");
+      }
     });
 
     // Clear return inputs if unchecked
-    if (!e.target.checked) {
+    if (!isChecked) {
       const returnDateInput = document.getElementById("returnDateInput");
       const returnTimeInput = document.getElementById("returnTimeInput");
       if (returnDateInput) returnDateInput.value = "";
       if (returnTimeInput) returnTimeInput.value = "";
     }
   });
+
+  // ============== Clear is-invalid when user enters valid value ================
+  const clearInvalidOnInput = (el, check) => {
+    if (!el) return;
+    const handler = () => {
+      if (check(el)) el.classList.remove("is-invalid");
+    };
+    el.addEventListener("input", handler);
+    el.addEventListener("change", handler);
+  };
+
+  // Step 1: required fields
+  [
+    "pickupInput",
+    "dropoffInput0",
+    "fromDateInput",
+    "fromTimeInput",
+    "passengersInput",
+  ].forEach((id) => {
+    const el = document.getElementById(id);
+    clearInvalidOnInput(el, (field) => !!field.value.trim());
+  });
+
+  // Step 1: return date/time — bỏ đỏ khi cả hai ô đều có giá trị
+  const returnDateInput = document.getElementById("returnDateInput");
+  const returnTimeInput = document.getElementById("returnTimeInput");
+  const checkReturnDateTime = () => {
+    if (!returnDateInput || !returnTimeInput) return;
+    const rd = returnDateInput.value?.trim();
+    const rt = returnTimeInput.value?.trim();
+    if (rd && rt) {
+      returnDateInput.classList.remove("is-invalid");
+      returnTimeInput.classList.remove("is-invalid");
+    }
+  };
+  [returnDateInput, returnTimeInput].forEach((el) => {
+    if (!el) return;
+    el.addEventListener("input", checkReturnDateTime);
+    el.addEventListener("change", checkReturnDateTime);
+  });
+
+  // Step 2: first name, last name, email, phone
+  const step2Content = contents[1];
+  const firstName = step2Content?.querySelector("#firstNameInput");
+  const lastName = step2Content?.querySelector("#lastNameInput");
+  const email = step2Content?.querySelector("#emailInput");
+  const phone = step2Content?.querySelector("#phoneInput");
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const phoneRegex =
+    /^[\+]?1?[-.\s]?(\([0-9]{3}\)|[0-9]{3})[-.\s]?[0-9]{3}[-.\s]?[0-9]{4}$/;
+
+  clearInvalidOnInput(firstName, (field) => !!field.value.trim());
+  clearInvalidOnInput(lastName, (field) => !!field.value.trim());
+  clearInvalidOnInput(
+    email,
+    (field) => !!field.value.trim() && emailRegex.test(field.value.trim())
+  );
+  clearInvalidOnInput(
+    phone,
+    (field) => !!field.value.trim() && phoneRegex.test(field.value.trim())
+  );
 
   // ============== Next/Back Buttons ================
   document.getElementById("nextBtn").addEventListener("click", async () => {
@@ -921,48 +1008,50 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function addClearButton(inputElement, dropoffIndex = null) {
-    const wrapper = inputElement.closest('.input-wrapper') || inputElement.closest('.autocomplete-dropdown-container');
-    
-    if (wrapper.querySelector('.input-clear-btn')) return;
-    
-    const clearBtn = document.createElement('button');
-    clearBtn.type = 'button';
-    clearBtn.className = 'input-clear-btn';
+    const wrapper =
+      inputElement.closest(".input-wrapper") ||
+      inputElement.closest(".autocomplete-dropdown-container");
+
+    if (wrapper.querySelector(".input-clear-btn")) return;
+
+    const clearBtn = document.createElement("button");
+    clearBtn.type = "button";
+    clearBtn.className = "input-clear-btn";
     clearBtn.innerHTML = '<i class="fas fa-times"></i>';
-    clearBtn.title = 'Clear address';
-    
-    wrapper.style.position = 'relative';
+    clearBtn.title = "Clear address";
+
+    wrapper.style.position = "relative";
     wrapper.appendChild(clearBtn);
-    
+
     const toggleClearBtn = () => {
       if (inputElement.value.trim()) {
-        clearBtn.classList.add('show');
-        inputElement.classList.add('has-clear');
+        clearBtn.classList.add("show");
+        inputElement.classList.add("has-clear");
       } else {
-        clearBtn.classList.remove('show');
-        inputElement.classList.remove('has-clear');
+        clearBtn.classList.remove("show");
+        inputElement.classList.remove("has-clear");
       }
     };
-    
-    clearBtn.addEventListener('click', (e) => {
+
+    clearBtn.addEventListener("click", (e) => {
       e.preventDefault();
       e.stopPropagation();
-      
-      inputElement.value = '';
-      inputElement.classList.remove('has-clear');
-      clearBtn.classList.remove('show');
-      
-      if (inputElement.id === 'pickupInput') {
+
+      inputElement.value = "";
+      inputElement.classList.remove("has-clear");
+      clearBtn.classList.remove("show");
+
+      if (inputElement.id === "pickupInput") {
         selectedLocations.pickup = null;
       } else if (dropoffIndex !== null) {
         selectedLocations.dropoffs[dropoffIndex] = null;
       }
-      
+
       inputElement.focus();
     });
-    
-    inputElement.addEventListener('input', toggleClearBtn);
-    
+
+    inputElement.addEventListener("input", toggleClearBtn);
+
     toggleClearBtn();
   }
 

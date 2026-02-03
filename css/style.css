@@ -58,7 +58,6 @@ body {
   background: #444;
 }
 
-
 /* ✅ Header text style */
 .text-warning {
   font-size: 10px;
@@ -394,6 +393,25 @@ h2.fw-bold {
 
 .toggle-switch input[type="checkbox"]:checked::before {
   transform: translateX(18px);
+}
+
+/* === Round Trip: Return Date/Time animation === */
+.return-date-section {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+  transition: max-height 0.4s ease, opacity 0.35s ease, padding 0.35s ease,
+    margin 0.35s ease;
+}
+
+.return-date-section.visible {
+  max-height: 90px;
+  opacity: 1;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
 }
 
 .toggle-switch label {
@@ -955,10 +973,10 @@ select.custom-input option {
     max-width: 49% !important;
   }
 
-  .pick-up, .drop-up {
+  .pick-up,
+  .drop-up {
     flex: 0 0 100% !important;
     max-width: 100% !important;
-
   }
 
   /* Nút bấm full width và dễ chạm */
@@ -1019,7 +1037,7 @@ select.custom-input option {
     flex-direction: column;
   }
 
-  .dropoff-section .dropoff-item.show{
+  .dropoff-section .dropoff-item.show {
     flex-direction: row;
   }
 
@@ -1063,7 +1081,7 @@ select.custom-input option {
     transform: translateX(-50%);
   }
 
-  .form-rents .btn-group{
+  .form-rents .btn-group {
     justify-content: center;
   }
 
@@ -1167,7 +1185,7 @@ select.custom-input option {
   }
 
   .step p {
-    letter-spacing: .5px;
+    letter-spacing: 0.5px;
   }
 
   .order-user {
