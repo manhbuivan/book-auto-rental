@@ -94,6 +94,12 @@ h2.fw-bold {
   align-items: center;
   text-align: center;
   min-width: 100px;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.step:hover {
+  opacity: 0.9;
 }
 
 .step p {
@@ -715,6 +721,7 @@ h2.fw-bold {
 .img-car {
   display: flex;
   justify-content: center;
+  align-items: center;
   width: 45%;
 }
 
@@ -723,6 +730,24 @@ h2.fw-bold {
   border-radius: 10px;
   object-fit: cover;
   flex-shrink: 0;
+}
+
+/* Payment step: ảnh xe rõ hơn, nhìn thấy toàn bộ xe */
+.step-3 .order-summary .img-car {
+  width: 52%;
+  min-width: 200px;
+  min-height: 140px;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px 0 0 10px;
+}
+
+.step-3 .order-summary .car-card img {
+  object-fit: contain;
+  object-position: center;
+  max-height: 180px;
+  width: auto;
+  max-width: 100%;
 }
 
 .car-info {
