@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book Auto Rental</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body class="bg-dark d-flex align-items-center justify-content-center vh-100">
+    <!-- Popup Container -->
+    <div class="booking-popup form-rents rounded-4 shadow-lg text-light">
+      <div class="text-center mb-4">
+        <small class="text-warning">RENT NOW</small>
+        <h2 class="fw-bold">Book Auto Rental</h2>
+      </div>
+
+      <!-- Step Progress -->
+      <div class="step-indicator">
+        <div class="step active">
+          <img
+            src="assests/svg/checking.svg"
+            class="step-icon"
+            alt="Vehicle icon"
+          />
+          <p>Trip Information</p>
+        </div>
+        <div class="line"></div>
+        <div class="step">
+          <img
+            src="assests/svg/un-check.svg"
+            class="step-icon"
+            alt="Vehicle icon"
+          />
+          <p>Choose Vehicle</p>
+        </div>
+        <div class="line"></div>
+        <div class="step">
+          <img
+            src="assests/svg/un-check.svg"
+            class="step-icon"
+            alt="Vehicle icon"
+          />
+          <p>Payment</p>
+        </div>
+      </div>
+
+      <!-- Step 1 -->
+      <form id="tripForm" class="step-content active">
+        <div class="row g-4-5">
+          <!-- Name -->
+          <div class="col-md-3">
+            <label class="form-label text-light">
+              First Name <span class="text-danger">*</span>
+            </label>
+            <input
+              type="text"
+              class="form-control custom-input"
+              placeholder="First Name"
+              id="firstNameInput"
+            />
+          </div>
+          <div class="col-md-3">
+            <label class="form-label text-light">
+              Last Name <span class="text-danger">*</span>
+            </label>
+            <input
+              type="text"
+              class="form-control custom-input"
+              placeholder="Last Name"
+              id="lastNameInput"
+            />
+          </div>
+          <div class="col-md-3">
+            <label class="form-label text-light">Email</label>
+            <input
+              type="text"
+              class="form-control custom-input"
+              placeholder="Email"
+              id="emailInput"
+            />
+          </div>
+          <div class="col-md-3">
+            <label class="form-label text-light">Phone Number </label>
+            <input
+              type="text"
+              class="form-control custom-input"
+              placeholder="Phone Number"
+              id="phoneInput"
+            />
+          </div>
+
+          <!-- Address -->
+          <div class="col-md-12">
+            <label class="form-label text-light">Address</label>
+            <input
+              type="text"
+              class="form-control custom-input"
+              placeholder="Address"
+              id="addressInput"
+            />
+          </div>
+
+          <!-- Pick, Drop up Date, time -->
+          <div class="pick-up col-md-6">
+            <label class="form-label text-light">
+              Pick Up Date <span class="text-danger">*</span>
+            </label>
+            <div class="flex-date">
+              <input type="date" class="form-control custom-input" id="fromDateInput"/>
+              <span class="text-light">-</span>
+              <input type="time" class="form-control custom-input" id="fromTimeInput"/>
+            </div>
+          </div>
+          <div class="drop-up col-md-6">
+            <label class="form-label text-light">
+              Drop Up Date <span class="text-danger">*</span>
+            </label>
+            <div class="flex-date">
+              <input type="date" class="form-control custom-input" id="toDateInput"/>
+              <span class="text-light">-</span>
+              <input type="time" class="form-control custom-input" id="toTimeInput"/>
+            </div>
+          </div>
+
+          <!-- Seats -->
+          <div class="col-md-6">
+            <label class="form-label text-light">
+              Pick Up Location <span class="text-danger">*</span>
+            </label>
+            <select class="form-control custom-input" style="color: #fff" id="pickupLocationInput">
+              <option value="" disabled selected>Select Location</option>
+              <option value="airport">Airport</option>
+              <option value="city-center">City Center</option>
+              <option value="hotel">Hotel</option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label text-light">
+              Pick Up Event <span class="text-danger">*</span>
+            </label>
+            <select class="form-control custom-input" style="color: #fff" id="pickupEventInput">
+              <option value="" disabled selected>Select Event</option>
+              <option value="conference">Conference</option>
+              <option value="wedding">Wedding</option>
+              <option value="vacation">Vacation</option>
+            </select>
+          </div>
+
+          <div class="btn-group">
+            <button type="button" class="btn-main" id="nextBtn">Next</button>
+          </div>
+        </div>
+      </form>
+
+      <!-- Step 2 -->
+      <div class="step-content step-2">
+        <div class="row g-4-5">
+          <!-- Card car -->
+          <div class="car-card-container" id="carList"></div>
+
+          <!-- Optional Service Card -->
+
+          <div class="option-card-container">
+            <label class="option-card">
+              <input type="checkbox" id="selfDriveInsurance" class="option-checkbox" />
+              <div class="option-info">
+                <h3 class="option-title">Self-drive Insurance</h3>
+                <p class="option-desc">
+                  Optional self-drive insurance covers the vehicle and
+                  passengers in case of accidents or damage. Recommended for all
+                  rentals.
+                </p>
+              </div>
+              <div class="option-price">
+                <span>$20</span>
+              </div>
+            </label>
+          </div>
+
+          <div class="btn-group">
+            <button class="btn-main" id="backBtn1">
+              <img src="assests/svg/arrow.svg" style="margin-right: 10px" />
+              Back
+            </button>
+            <button type="button" class="btn-main" id="nextToPayment">
+              Book This Car
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="step-content step-3">
+        <h4 class="section-title">Order Information</h4>
+
+        <div class="order-info">
+          <div class="order-user">
+            <div class="user-left">
+              <p id="fullName" style="font-size: 15px; color: #fff">
+                <strong>Oscar Nguyen</strong>
+              </p>
+              <p id="phone"><img src="assests/svg/phone.svg" /> 0763661616</p>
+              <p id="email"><img src="assests/svg/mail.svg" /> david4792@gmail.com</p>
+              <p id="address">
+                <img src="assests/svg/address.svg" /> 123 William Street, New
+                York City, New York State, United States
+              </p>
+            </div>
+            <div class="user-right">
+              <p id="pickupDate">
+                <strong class="text-pickup">Pick Up Date:</strong> June 28, 2025
+                – 3:30 PM
+              </p>
+              <p id="dropupDate">
+                <strong class="text-pickup">Drop Up Date:</strong> June 29, 2025
+                – 3:30 PM
+              </p>
+              <p id="pickupLocation">
+                <strong class="text-pickup">Pick Up Location:</strong> Anaheim,
+                CA
+              </p>
+              <p id="pickupEvent"><strong class="text-pickup">Pick Up Event:</strong> Wedding</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="order-summary">
+          <!-- Card Chi Tiết Xe -->
+          <div class="car-card">
+            <div class="img-car">
+              <img src="assests/png/urus_1.png" alt="Lamborghini Urus" />
+            </div>
+            <div class="car-info">
+              <h3 class="car-name">Lamborghini Urus</h3>
+              <div class="car-details">
+                <span id="seats-info"><img src="assests/svg/seat.svg" />4 Seats</span>
+                <span id="auto-info"><img src="assests/svg/auto.svg" />Auto</span>
+                <span id="bags-info"><img src="assests/svg/bag.svg" />2 Bags</span>
+              </div>
+              <p class="car-desc">Carries up to 4 passengers.</p>
+            </div>
+          </div>
+
+          <!-- Card Giá Tiền -->
+          <div class="price-summary">
+            <div class="price-row">
+              <span>Subtotal</span><span id="price-subtotal">$0</span>
+            </div>
+            <div class="price-row">
+              <span>Self-drive Insurance</span><span id="price-insurance">$0</span>
+            </div>
+            <div class="price-row discount">
+              <span>Discount</span><span id="price-discount">-$0</span>
+            </div>
+            <hr />
+            <div class="price-row total">
+              <span>Total</span><span id="price-total"></span>
+            </div>
+
+            <div class="coupon-row">
+              <input type="text" placeholder="Coupon" class="coupon-input" id="couponInput" />
+              <button id="applyCouponBtn" class="coupon-btn">Add</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-actions">
+          <div>
+            <input type="checkbox" id="acceptTerm" class="custom-checkbox" />
+            <label for="acceptTerm">&nbsp;&nbsp; I accept the Terms</label>
+          </div>
+
+          <div class="btn-group" style="margin-top: 0">
+            <button class="btn-main" id="backBtn2">
+              <img src="assests/svg/arrow.svg" style="margin-right: 10px" />
+              Back
+            </button>
+            <button type="button" class="btn-main" id="payment">
+              Pay
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/script_2.js"></script>
+  </body>
+</html>
