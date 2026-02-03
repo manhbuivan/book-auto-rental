@@ -124,6 +124,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!selectedLocations.pickup || selectedLocations.dropoffs.length === 0) {
       return { distance: 0, pickupDistance: 0, returnDistance: 0 };
     }
+    // API địa điểm mới chỉ trả về place_id + description, không có lat/lng
+    if (
+      selectedLocations.pickup.lat == null ||
+      selectedLocations.pickup.lng == null
+    ) {
+      return { distance: 0, pickupDistance: 0, returnDistance: 0 };
+    }
 
     let totalDistance = 0;
     let pickupDistance = 0;
@@ -931,58 +938,38 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   }
 
-  async function searchUS(keyword) {
-    if (!keyword) return [];
+  const LOCATION_API_URL =
+    "https://247ride.addons.la/leads/new/forms/ajax/location.php";
 
-    return new Promise((resolve) => {
-      const service = new google.maps.places.AutocompleteService();
+  async function searchLocationAPI(keyword) {
+    if (!keyword || !keyword.trim()) return [];
 
-      service.getPlacePredictions(
-        {
-          input: keyword,
-          componentRestrictions: { country: "us" },
-        },
-        async (predictions, status) => {
-          if (
-            status !== google.maps.places.PlacesServiceStatus.OK ||
-            !predictions
-          ) {
-            resolve([]);
-            return;
-          }
+    const form = new FormData();
+    form.append("search", keyword.trim());
 
-          const geocoder = new google.maps.Geocoder();
-          const results = await Promise.all(
-            predictions.slice(0, 5).map((prediction) => {
-              return new Promise((res) => {
-                geocoder.geocode(
-                  { placeId: prediction.place_id },
-                  (results, status) => {
-                    if (status === "OK" && results[0]) {
-                      res({
-                        address: results[0].formatted_address,
-                        lat: results[0].geometry.location.lat(),
-                        lng: results[0].geometry.location.lng(),
-                      });
-                    } else {
-                      res(null);
-                    }
-                  }
-                );
-              });
-            })
-          );
+    try {
+      const res = await fetch(LOCATION_API_URL, {
+        method: "POST",
+        body: form,
+      });
+      const text = await res.text();
+      const data = JSON.parse(text);
+      if (!Array.isArray(data)) return [];
 
-          resolve(results.filter((r) => r !== null));
-        }
-      );
-    });
+      return data.map((item) => ({
+        address: item.description || item,
+        place_id: item.place_id || "",
+      }));
+    } catch (err) {
+      console.error("Location API Error:", err);
+      return [];
+    }
   }
 
   function attachAutocomplete(input, dropdown, dropoffIndex = null) {
     addClearButton(input, dropoffIndex);
     const handleSearch = debounce(async () => {
-      const results = await searchUS(input.value);
+      const results = await searchLocationAPI(input.value);
       dropdown.innerHTML = results
         .map((r, i) => `<div class="item" data-i="${i}">${r.address}</div>`)
         .join("");
