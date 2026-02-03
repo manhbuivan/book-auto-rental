@@ -22,46 +22,57 @@ document.addEventListener("DOMContentLoaded", () => {
       style: "currency",
       currency: "USD",
       minimumFractionDigits: 2,
-      maximumFractionDigits: 2
+      maximumFractionDigits: 2,
     });
   }
 
-  document.querySelector("#applyCouponBtn").addEventListener("click", function() {
-    const couponInput = document.querySelector("#couponInput");
-    const couponCode = couponInput.value.trim().toUpperCase();
-    const discountElem = document.querySelector("#price-discount");
-    const totalElem = document.querySelector("#price-total");
+  document
+    .querySelector("#applyCouponBtn")
+    .addEventListener("click", function () {
+      const couponInput = document.querySelector("#couponInput");
+      const couponCode = couponInput.value.trim().toUpperCase();
+      const discountElem = document.querySelector("#price-discount");
+      const totalElem = document.querySelector("#price-total");
 
-    // Lấy thông tin xe đã chọn
-    const selectedCarRadio = document.querySelector('input[name="selectedCar"]:checked');
+      // Lấy thông tin xe đã chọn
+      const selectedCarRadio = document.querySelector(
+        'input[name="selectedCar"]:checked'
+      );
 
-    const carCard = selectedCarRadio.closest(".car-card-item");
-    const carData = JSON.parse(carCard.dataset.carData || '{}');
+      const carCard = selectedCarRadio.closest(".car-card-item");
+      const carData = JSON.parse(carCard.dataset.carData || "{}");
 
-    // Kiểm tra mã khuyến mãi của xe
-    const validPromotionCode = carData.promotionCode;
-    const discountAmount = carData.discountAmount || 0;
+      // Kiểm tra mã khuyến mãi của xe
+      const validPromotionCode = carData.promotionCode;
+      const discountAmount = carData.discountAmount || 0;
 
-    // So sánh mã người dùng nhập với mã của xe
-    if (couponCode === validPromotionCode) {
-      rentsData.promotionCode = couponCode;
-      if (discountElem) {
-        discountElem.textContent = `-${formattedPrice(discountAmount)}`;
-      };
+      // So sánh mã người dùng nhập với mã của xe
+      if (couponCode === validPromotionCode) {
+        rentsData.promotionCode = couponCode;
+        if (discountElem) {
+          discountElem.textContent = `-${formattedPrice(discountAmount)}`;
+        }
 
-      if (totalElem && (rentsData.totalPrice >= discountAmount)) {
-        totalElem.textContent = `${formattedPrice(rentsData.totalPrice - discountAmount)}`;
-      };
+        if (totalElem && rentsData.totalPrice >= discountAmount) {
+          totalElem.textContent = `${formattedPrice(
+            rentsData.totalPrice - discountAmount
+          )}`;
+        }
 
-      alert(`Coupon applied successfully! You saved ${formattedPrice(discountAmount)}`);
-    } else {
-      rentsData.promotionCode = "";
-      alert("Invalid coupon code!");
-      if (discountElem) discountElem.textContent = "-$0";
-      if (totalElem) totalElem.textContent = `${formattedPrice(rentsData.totalPrice)}`;
-      couponInput.focus();
-    }
-  });
+        alert(
+          `Coupon applied successfully! You saved ${formattedPrice(
+            discountAmount
+          )}`
+        );
+      } else {
+        rentsData.promotionCode = "";
+        alert("Invalid coupon code!");
+        if (discountElem) discountElem.textContent = "-$0";
+        if (totalElem)
+          totalElem.textContent = `${formattedPrice(rentsData.totalPrice)}`;
+        couponInput.focus();
+      }
+    });
 
   const showStep = (index) => {
     contents.forEach((c, i) => c.classList.toggle("active", i === index));
@@ -98,10 +109,12 @@ document.addEventListener("DOMContentLoaded", () => {
         id: car.id,
         promotionCode: car.promotionCode || "",
         discountAmount: car.discountAmount || 0,
-        finalPrice: car.finalPrice || 0
+        finalPrice: car.finalPrice || 0,
       });
       container.innerHTML += `
-      <label class="car-card-item" data-car-id="${car.id}" data-car-data='${carDataJson}'>
+      <label class="car-card-item" data-car-id="${
+        car.id
+      }" data-car-data='${carDataJson}'>
         <div class="item-left">
           <input type="radio" name="selectedCar" class="car-checkbox" ${
             index === 0 ? "checked" : ""
@@ -164,54 +177,53 @@ document.addEventListener("DOMContentLoaded", () => {
     //Fill dates
     const pickupDateElem = step3Content.querySelector("#pickupDate");
     if (pickupDateElem && rentsData.fromDate && rentsData.fromTime) {
-      const formattedDate = new Date(`${rentsData.fromDate}T${rentsData.fromTime}`).toLocaleString(
-        "en-US",
-        {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-        }
-      );
+      const formattedDate = new Date(
+        `${rentsData.fromDate}T${rentsData.fromTime}`
+      ).toLocaleString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
       pickupDateElem.innerHTML = `<strong class="text-pickup">Pick Up Date:</strong> ${formattedDate}`;
     }
 
     const dropupDateElem = step3Content.querySelector("#dropupDate");
     if (dropupDateElem && rentsData.toDate && rentsData.toTime) {
-      const formattedDate = new Date(`${rentsData.toDate}T${rentsData.toTime}`).toLocaleString(
-        "en-US",
-        {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-        }
-      );
+      const formattedDate = new Date(
+        `${rentsData.toDate}T${rentsData.toTime}`
+      ).toLocaleString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
       dropupDateElem.innerHTML = `<strong class="text-pickup">Drop Up Date:</strong> ${formattedDate}`;
     }
 
     const pickupLocationElem = step3Content.querySelector("#pickupLocation");
     if (pickupLocationElem && rentsData.pickupLocation) {
       const locationMap = {
-        'airport': 'Airport',
-        'hotel': 'Hotel',
-        'city_center': 'City Center'
+        airport: "Airport",
+        hotel: "Hotel",
+        city_center: "City Center",
       };
-  
-      const textPickupLocation = locationMap[rentsData.pickupLocation] || 'City Center';
+
+      const textPickupLocation =
+        locationMap[rentsData.pickupLocation] || "City Center";
       pickupLocationElem.innerHTML = `<strong class="text-pickup">Drop Up Date:</strong> ${textPickupLocation}`;
     }
 
     const pickupEventElem = step3Content.querySelector("#pickupEvent");
     if (pickupEventElem && rentsData.pickupEvent) {
       const eventMap = {
-        'conference': 'Conference',
-        'wedding': 'Wedding',
-        'vacation': 'Vacation',
-      }
-      const textPickupEvent = eventMap[rentsData.pickupEvent] || 'Vacation';
+        conference: "Conference",
+        wedding: "Wedding",
+        vacation: "Vacation",
+      };
+      const textPickupEvent = eventMap[rentsData.pickupEvent] || "Vacation";
       pickupEventElem.innerHTML = `<strong class="text-pickup">Pick Up Event:</strong> ${textPickupEvent}`;
     }
 
@@ -302,14 +314,15 @@ document.addEventListener("DOMContentLoaded", () => {
       email.classList.remove("is-invalid");
     }
 
-    const phoneRegex = /^[\+]?1?[-.\s]?(\([0-9]{3}\)|[0-9]{3})[-.\s]?[0-9]{3}[-.\s]?[0-9]{4}$/;
+    const phoneRegex =
+      /^[\+]?1?[-.\s]?(\([0-9]{3}\)|[0-9]{3})[-.\s]?[0-9]{3}[-.\s]?[0-9]{4}$/;
     if (!phone.value.trim() || !phoneRegex.test(phone.value.trim())) {
       phone.classList.add("is-invalid");
       valid = false;
     } else {
       phone.classList.remove("is-invalid");
     }
-    
+
     if (valid) {
       rentsData.firstName = document
         .getElementById("firstNameInput")
@@ -413,7 +426,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await res.json();
 
       if (data.success) {
-        paymentRent(data.data, 'https://machshuttle.hayho.org/');
+        paymentRent(data.data, "https://www.machshuttle.com/");
       } else {
         alert(data.message || "Rent failed!");
       }
@@ -422,13 +435,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  async function paymentRent(rentId = 0, url = '') {
+  async function paymentRent(rentId = 0, url = "") {
     try {
       const payload = {
         rentId,
         successUrl: url,
         cancelUrl: url,
-      }
+      };
       const res = await fetch(
         "https://machshuttle.hayho.org/api/payments/stripe/rent/checkout",
         {
