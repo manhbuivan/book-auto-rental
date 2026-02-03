@@ -966,6 +966,29 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // Geocode Google place_id để lấy lat/lng cho tính distance
+  async function geocodePlaceId(placeId) {
+    if (!placeId) return null;
+
+    return new Promise((resolve) => {
+      const geocoder = new google.maps.Geocoder();
+      geocoder.geocode({ placeId }, (results, status) => {
+        if (status === "OK" && results && results[0]) {
+          const r = results[0];
+          resolve({
+            address: r.formatted_address,
+            lat: r.geometry.location.lat(),
+            lng: r.geometry.location.lng(),
+            place_id: placeId,
+          });
+        } else {
+          console.error("Geocode error:", status);
+          resolve(null);
+        }
+      });
+    });
+  }
+
   function attachAutocomplete(input, dropdown, dropoffIndex = null) {
     addClearButton(input, dropoffIndex);
     const handleSearch = debounce(async () => {
@@ -975,14 +998,20 @@ document.addEventListener("DOMContentLoaded", () => {
         .join("");
 
       dropdown.querySelectorAll(".item").forEach((el) => {
-        el.onclick = () => {
-          const chosen = results[el.dataset.i];
-          input.value = chosen.address;
+        el.onclick = async () => {
+          const base = results[el.dataset.i];
+          input.value = base.address;
           dropdown.innerHTML = "";
 
-          // input.dispatchEvent(new Event('input'));
+          let chosen = base;
+          if (base.place_id) {
+            const geo = await geocodePlaceId(base.place_id);
+            if (geo) {
+              chosen = geo;
+            }
+          }
 
-          // Save location
+          // Save location (dùng object đã có lat/lng + place_id nếu geocode thành công)
           if (input.id === "pickupInput") {
             selectedLocations.pickup = chosen;
           } else if (dropoffIndex !== null) {
