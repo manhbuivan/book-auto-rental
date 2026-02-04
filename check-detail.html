@@ -24,16 +24,24 @@
         box-sizing: border-box;
       }
       .check-container {
+        width: 100%;
         max-width: 720px;
         margin: 0 auto;
       }
+      @media (min-width: 740px) {
+        .check-container {
+          width: 720px;
+        }
+      }
       .search-card {
+        width: 100%;
         background: linear-gradient(180deg, #161616 0%, #0d0d0d 100%);
         border-radius: 20px;
         padding: 1.75rem 1.5rem;
         border: 1px solid rgba(255, 255, 255, 0.06);
         box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.45);
         margin-bottom: 1.5rem;
+        box-sizing: border-box;
       }
       .search-card h1 {
         font-size: 1.4rem;
@@ -87,7 +95,11 @@
       .result-head .count strong {
         color: var(--main-color, #f5b754);
       }
+      #resultArea {
+        width: 100%;
+      }
       .result-list-wrap {
+        width: 100%;
         max-height: 65vh;
         overflow-y: auto;
         padding-right: 4px;
@@ -124,11 +136,17 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         gap: 10px;
         padding: 1rem 1.25rem;
         background: rgba(0, 0, 0, 0.2);
         border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      .booking-block .block-header .id-customer {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
       .booking-block .block-header .id-customer {
         font-size: 0.95rem;
@@ -144,6 +162,7 @@
         display: flex;
         align-items: center;
         gap: 12px;
+        flex-shrink: 0;
       }
       .booking-block .block-body {
         padding: 1rem 1.25rem;
@@ -292,8 +311,13 @@
           grid-template-columns: 1fr;
         }
         .booking-block .block-header {
-          flex-direction: column;
-          align-items: flex-start;
+          flex-wrap: nowrap;
+        }
+        .booking-block .block-header .id-customer {
+          font-size: 0.875rem;
+        }
+        .booking-block .block-header .id-customer span {
+          font-size: 0.8rem;
         }
         .booking-block .block-footer {
           justify-content: stretch;
@@ -481,16 +505,15 @@
               "</span></div>";
           }
           html += "</div>";
-          html += '<div class="block-footer">';
           if (showCheckout) {
+            html += '<div class="block-footer">';
             html +=
               '<button type="button" class="btn-main btn-checkout" data-booking-id="' +
               id +
               '">Checkout</button>';
-          } else {
-            html += '<span class="status-badge status-2">Paid</span>';
+            html += "</div>";
           }
-          html += "</div></div>";
+          html += "</div>";
           return html;
         }
 
