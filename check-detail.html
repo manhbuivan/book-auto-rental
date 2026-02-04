@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Check Booking - Book Auto Rental</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <style>
+      .check-page {
+        min-height: 100vh;
+        padding: 1.5rem 1rem 2rem;
+        box-sizing: border-box;
+      }
+      .check-container {
+        max-width: 720px;
+        margin: 0 auto;
+      }
+      .search-card {
+        background: linear-gradient(180deg, #161616 0%, #0d0d0d 100%);
+        border-radius: 20px;
+        padding: 1.75rem 1.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.45);
+        margin-bottom: 1.5rem;
+      }
+      .search-card h1 {
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 0.2rem;
+        letter-spacing: -0.02em;
+      }
+      .search-card .subtitle {
+        color: #9ca3af;
+        font-size: 0.875rem;
+        margin-bottom: 1.25rem;
+      }
+      .search-wrap {
+        display: flex;
+        gap: 12px;
+      }
+      .search-wrap input {
+        flex: 1;
+        background: #1f1f1f;
+        border: 1px solid #333;
+        border-radius: 14px;
+        padding: 14px 18px;
+        color: #fff;
+        font-size: 1rem;
+        transition: border-color 0.2s;
+      }
+      .search-wrap input::placeholder {
+        color: #6b7280;
+      }
+      .search-wrap input:focus {
+        outline: none;
+        border-color: var(--main-color, #f5b754);
+      }
+      .search-wrap .btn-main {
+        flex-shrink: 0;
+        padding: 14px 24px;
+      }
+      .result-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        padding: 0 2px;
+      }
+      .result-head .count {
+        font-size: 0.8rem;
+        color: #6b7280;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+      .result-head .count strong {
+        color: var(--main-color, #f5b754);
+      }
+      .result-list-wrap {
+        max-height: 65vh;
+        overflow-y: auto;
+        padding-right: 4px;
+      }
+      .result-list-wrap::-webkit-scrollbar {
+        width: 6px;
+      }
+      .result-list-wrap::-webkit-scrollbar-track {
+        background: #1a1a1a;
+        border-radius: 3px;
+      }
+      .result-list-wrap::-webkit-scrollbar-thumb {
+        background: #444;
+        border-radius: 3px;
+      }
+      .result-list {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .booking-block {
+        background: rgba(28, 28, 28, 0.9);
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        padding: 0;
+        overflow: hidden;
+        transition: border-color 0.2s, box-shadow 0.2s;
+      }
+      .booking-block:hover {
+        border-color: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.4);
+      }
+      .booking-block .block-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 1rem 1.25rem;
+        background: rgba(0, 0, 0, 0.2);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      .booking-block .block-header .id-customer {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #f3f4f6;
+      }
+      .booking-block .block-header .id-customer span {
+        color: #6b7280;
+        font-weight: 500;
+        font-size: 0.85rem;
+      }
+      .booking-block .block-header .meta {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .booking-block .block-body {
+        padding: 1rem 1.25rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem 1.5rem;
+      }
+      .booking-block .block-body .row-item {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        padding: 0;
+        margin: 0;
+        border: none;
+      }
+      .booking-block .block-body .row-item strong {
+        color: #6b7280;
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-weight: 600;
+      }
+      .booking-block .block-body .row-item span {
+        color: #e5e7eb;
+        font-size: 0.875rem;
+        text-align: left;
+        word-break: break-word;
+      }
+      .booking-block .block-body .total-row {
+        grid-column: 1 / -1;
+        margin-top: 0.5rem;
+        padding-top: 0.75rem;
+        border-top: 1px solid rgba(245, 183, 84, 0.2);
+      }
+      .booking-block .block-body .total-row strong {
+        color: var(--main-color, #f5b754);
+      }
+      .booking-block .block-body .total-row span {
+        color: var(--main-color, #f5b754);
+        font-weight: 700;
+        font-size: 1rem;
+      }
+      .booking-block .block-footer {
+        margin: 0;
+        padding: 1rem 1.25rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        background: rgba(0, 0, 0, 0.15);
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+      }
+      .booking-block .block-footer .btn-checkout {
+        padding: 10px 22px;
+        font-size: 0.9rem;
+      }
+      .status-badge {
+        display: inline-block;
+        padding: 5px 12px;
+        border-radius: 999px;
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+      }
+      .status-0 {
+        background: #374151;
+        color: #9ca3af;
+      }
+      .status-1 {
+        background: rgba(245, 183, 84, 0.22);
+        color: #f5b754;
+      }
+      .status-2 {
+        background: rgba(34, 197, 94, 0.22);
+        color: #22c55e;
+      }
+      .status-3 {
+        background: rgba(239, 68, 68, 0.22);
+        color: #ef4444;
+      }
+      .empty-state,
+      .error-state,
+      .loading-state {
+        text-align: center;
+        color: #9ca3af;
+        padding: 2.5rem 1.5rem;
+      }
+      .error-state {
+        color: #f87171;
+        background: rgba(239, 68, 68, 0.06);
+        border-radius: 14px;
+        margin-top: 1rem;
+      }
+      .loading-state::before {
+        content: "";
+        display: inline-block;
+        width: 22px;
+        height: 22px;
+        border: 2px solid rgba(245, 183, 84, 0.3);
+        border-top-color: var(--main-color);
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+        vertical-align: middle;
+        margin-right: 10px;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .back-link {
+        color: #9ca3af;
+        font-size: 0.9rem;
+        text-decoration: none;
+        margin-bottom: 1rem;
+        display: inline-block;
+      }
+      .back-link:hover {
+        color: #f5b754;
+      }
+      #resultListHeader {
+        display: none;
+        margin-bottom: 0;
+      }
+      #resultListHeader.visible {
+        display: flex;
+        margin-bottom: 1rem;
+      }
+
+      @media (max-width: 576px) {
+        .check-page {
+          padding: 1rem 0.75rem;
+        }
+        .search-card {
+          padding: 1.25rem 1rem;
+        }
+        .search-wrap {
+          flex-direction: column;
+        }
+        .search-wrap .btn-main {
+          width: 100%;
+        }
+        .result-list-wrap {
+          max-height: 55vh;
+        }
+        .booking-block .block-body {
+          grid-template-columns: 1fr;
+        }
+        .booking-block .block-header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .booking-block .block-footer {
+          justify-content: stretch;
+        }
+        .booking-block .block-footer .btn-checkout {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-dark text-light">
+    <div class="check-page">
+      <div class="check-container">
+        <a href="index.html" class="back-link"
+          ><i class="fas fa-arrow-left"></i> Back to Booking</a
+        >
+
+        <div class="search-card rounded-4 shadow-lg">
+          <h1>Check Booking</h1>
+          <p class="subtitle">Search by Booking ID, email or phone number</p>
+          <div class="search-wrap">
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="ID, email or phone..."
+              autocomplete="off"
+            />
+            <button type="button" class="btn-main" id="searchBtn">
+              Search
+            </button>
+          </div>
+        </div>
+
+        <div id="resultArea">
+          <div id="loadingState" class="loading-state" style="display: none">
+            Searching...
+          </div>
+          <div id="errorState" class="error-state" style="display: none"></div>
+          <div id="emptyState" class="empty-state" style="display: none">
+            Enter ID, email or phone and click Search.
+          </div>
+          <div id="resultListHeader" class="result-head">
+            <span class="count"
+              ><strong id="resultCount">0</strong> booking(s) found</span
+            >
+          </div>
+          <div
+            id="resultListWrap"
+            class="result-list-wrap"
+            style="display: none"
+          >
+            <div id="resultList" class="result-list"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        var FIND_API = "https://machshuttle.hayho.org/api/bookings/find";
+        var CHECKOUT_API =
+          "https://machshuttle.hayho.org/api/payments/stripe/booking/checkout";
+
+        var STATUS_MAP = {
+          0: "None",
+          1: "Pending",
+          2: "Paid",
+          3: "Failed",
+        };
+
+        var searchInput = document.getElementById("searchInput");
+        var searchBtn = document.getElementById("searchBtn");
+        var loadingState = document.getElementById("loadingState");
+        var errorState = document.getElementById("errorState");
+        var emptyState = document.getElementById("emptyState");
+        var resultListHeader = document.getElementById("resultListHeader");
+        var resultListWrap = document.getElementById("resultListWrap");
+        var resultCountEl = document.getElementById("resultCount");
+        var resultList = document.getElementById("resultList");
+
+        function show(loading, error, empty, list) {
+          loadingState.style.display = loading ? "block" : "none";
+          errorState.style.display = error ? "block" : "none";
+          if (error) errorState.textContent = error;
+          emptyState.style.display = empty ? "block" : "none";
+          resultListHeader.classList.toggle("visible", !!list);
+          resultListWrap.style.display = list ? "block" : "none";
+        }
+
+        function formatDate(str) {
+          if (!str) return "";
+          var d = new Date(str);
+          var mm = String(d.getMonth() + 1).padStart(2, "0");
+          var dd = String(d.getDate()).padStart(2, "0");
+          var yyyy = d.getFullYear();
+          var h = d.getHours();
+          var m = String(d.getMinutes()).padStart(2, "0");
+          var ampm = h >= 12 ? "PM" : "AM";
+          var h12 = h % 12 || 12;
+          return mm + "/" + dd + "/" + yyyy + ", " + h12 + ":" + m + " " + ampm;
+        }
+
+        function row(label, value) {
+          if (value == null || value === "") return "";
+          return (
+            '<div class="row-item"><strong>' +
+            label +
+            "</strong><span>" +
+            value +
+            "</span></div>"
+          );
+        }
+
+        function renderBooking(b) {
+          var status =
+            b.paymentStatus != null
+              ? b.paymentStatus
+              : b.status != null
+              ? b.status
+              : 0;
+          var statusText =
+            STATUS_MAP[status] != null ? STATUS_MAP[status] : "None";
+          var showCheckout = status !== 2;
+          var id = b.id || b.bookingId;
+          var customer =
+            b.customerName ||
+            (b.firstName && b.lastName ? b.firstName + " " + b.lastName : "") ||
+            b.fullName ||
+            "—";
+          var totalStr = "";
+          if (b.totalPrice != null) {
+            totalStr =
+              typeof b.totalPrice === "number"
+                ? "$" + b.totalPrice.toLocaleString()
+                : b.totalPrice;
+          }
+          var dropoff = b.dropoffLocation || b.dropoff;
+          if (b.dropoffPoints && b.dropoffPoints.length) {
+            dropoff = b.dropoffPoints
+              .map(function (p) {
+                return p.location || p.address;
+              })
+              .join(" – ");
+          }
+          var dateStr = b.pickupDateTime
+            ? formatDate(b.pickupDateTime)
+            : b.pickupDate && b.pickupTime
+            ? b.pickupDate + " " + b.pickupTime
+            : "";
+
+          var html = '<div class="booking-block">';
+          html += '<div class="block-header">';
+          html +=
+            '<div class="id-customer">#' +
+            id +
+            " <span>· " +
+            customer +
+            "</span></div>";
+          html += '<div class="meta">';
+          html +=
+            '<span class="status-badge status-' +
+            status +
+            '">' +
+            statusText +
+            "</span>";
+          if (totalStr)
+            html +=
+              '<span style="color: var(--main-color); font-weight: 700;">' +
+              totalStr +
+              "</span>";
+          html += "</div></div>";
+          html += '<div class="block-body">';
+          html += row("Pick up", b.pickupLocation || b.pickup);
+          html += row("Drop off", dropoff);
+          html += row("Date", dateStr);
+          html += row("Vehicle", b.carName || b.vehicleName);
+          if (b.returnPickupDateTime)
+            html += row("Return", formatDate(b.returnPickupDateTime));
+          if (b.phone) html += row("Phone", b.phone);
+          if (b.email) html += row("Email", b.email);
+          if (b.totalPrice != null) {
+            html +=
+              '<div class="row-item total-row"><strong>Total</strong><span>' +
+              totalStr +
+              "</span></div>";
+          }
+          html += "</div>";
+          html += '<div class="block-footer">';
+          if (showCheckout) {
+            html +=
+              '<button type="button" class="btn-main btn-checkout" data-booking-id="' +
+              id +
+              '">Checkout</button>';
+          } else {
+            html += '<span class="status-badge status-2">Paid</span>';
+          }
+          html += "</div></div>";
+          return html;
+        }
+
+        function doSearch() {
+          var q = (searchInput.value || "").trim();
+          if (!q) {
+            show(false, false, true, false);
+            return;
+          }
+
+          show(true, false, false, false);
+
+          function handleList(list) {
+            if (!list) list = [];
+            if (!Array.isArray(list)) list = [list];
+            if (list.length === 0) {
+              show(false, false, true, false);
+              emptyState.textContent = "No booking found.";
+              emptyState.style.display = "block";
+              return;
+            }
+            resultCountEl.textContent = list.length;
+            resultList.innerHTML = list.map(renderBooking).join("");
+            show(false, false, false, true);
+            bindCheckoutButtons();
+          }
+
+          function bindCheckoutButtons() {
+            resultList
+              .querySelectorAll(".btn-checkout")
+              .forEach(function (btn) {
+                btn.addEventListener("click", function () {
+                  var id = btn.getAttribute("data-booking-id");
+                  if (!id) return;
+                  btn.disabled = true;
+                  btn.textContent = "Redirecting...";
+                  var baseUrl =
+                    location.origin + location.pathname.replace(/[^/]*$/, "") ||
+                    location.origin + "/";
+                  fetch(CHECKOUT_API, {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                      "X-Client-Timezone-Offset":
+                        new Date().getTimezoneOffset() + "",
+                    },
+                    body: JSON.stringify({
+                      bookingId: id,
+                      successUrl:
+                        baseUrl +
+                        "success.html?booking_id=" +
+                        encodeURIComponent(id),
+                      cancelUrl: baseUrl + "fail.html",
+                    }),
+                  })
+                    .then(function (r) {
+                      return r.json();
+                    })
+                    .then(function (res) {
+                      if (res.success && res.data && res.data.checkoutUrl) {
+                        window.location.href = res.data.checkoutUrl;
+                      } else {
+                        alert(res.message || "Checkout failed.");
+                        btn.disabled = false;
+                        btn.textContent = "Checkout";
+                      }
+                    })
+                    .catch(function () {
+                      alert("Checkout failed.");
+                      btn.disabled = false;
+                      btn.textContent = "Checkout";
+                    });
+                });
+              });
+          }
+
+          fetch(FIND_API + "?q=" + encodeURIComponent(q))
+            .then(function (res) {
+              return res.json();
+            })
+            .then(function (data) {
+              if (!data.success) {
+                show(false, data.message || "Search failed.", false, false);
+                return;
+              }
+              handleList(data.data);
+            })
+            .catch(function (err) {
+              show(false, "Could not search. Try again.", false, false);
+            });
+        }
+
+        searchBtn.addEventListener("click", doSearch);
+        searchInput.addEventListener("keydown", function (e) {
+          if (e.key === "Enter") doSearch();
+        });
+      })();
+    </script>
+  </body>
+</html>
