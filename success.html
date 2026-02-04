@@ -51,18 +51,193 @@
         min-width: 200px;
         justify-content: center;
       }
+      .result-popup {
+        width: 640px;
+        text-align: left;
+      }
+      .result-popup .head {
+        text-align: center;
+      }
+      .booking-detail-card {
+        background: var(--background-card, #222);
+        border-radius: 12px;
+        border: 1px solid var(--border-color, #333);
+        padding: 1.25rem 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+      .booking-detail-card h4 {
+        font-size: 14px;
+        color: #888;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 1rem;
+      }
+      .booking-detail-card .row-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 6px 0;
+        color: #ccc;
+        font-size: 14px;
+      }
+      .booking-detail-card .row-item strong {
+        color: #fff;
+        margin-right: 8px;
+      }
+      .booking-detail-card .total-row {
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid #333;
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--main-color, #f5b754);
+      }
+      .detail-loading,
+      .detail-error {
+        text-align: center;
+        color: #888;
+        padding: 1.5rem;
+      }
+      .detail-error {
+        color: #ef4444;
+      }
+      .result-popup .actions {
+        text-align: center;
+        margin-top: 1.5rem;
+      }
     </style>
   </head>
   <body class="bg-dark d-flex align-items-center justify-content-center vh-100">
     <div class="result-popup rounded-4 shadow-lg text-light">
-      <div class="icon-wrap">
-        <i class="fas fa-check"></i>
+      <div class="head">
+        <div class="icon-wrap">
+          <i class="fas fa-check"></i>
+        </div>
+        <h2 class="fw-bold">Payment Successful</h2>
+        <p class="message">
+          Your booking has been confirmed. Thank you for choosing us.
+        </p>
       </div>
-      <h2 class="fw-bold">Payment Successful</h2>
-      <p class="message">
-        Your booking has been confirmed. Thank you for choosing us.
-      </p>
-      <a href="index.html" class="btn-main">Back to Booking</a>
+
+      <div id="bookingDetail" class="booking-detail-card" style="display: none">
+        <h4>Booking detail</h4>
+        <div id="detailContent"></div>
+      </div>
+      <div id="detailLoading" class="detail-loading" style="display: none">
+        Loading...
+      </div>
+      <div id="detailError" class="detail-error" style="display: none"></div>
+
+      <div class="actions">
+        <a href="index.html" class="btn-main">Back to Booking</a>
+      </div>
     </div>
+
+    <script>
+      (function () {
+        const params = new URLSearchParams(window.location.search);
+        const bookingId = params.get("booking_id") || params.get("id");
+        if (!bookingId) return;
+
+        const detailEl = document.getElementById("bookingDetail");
+        const contentEl = document.getElementById("detailContent");
+        const loadingEl = document.getElementById("detailLoading");
+        const errorEl = document.getElementById("detailError");
+
+        loadingEl.style.display = "block";
+
+        fetch("https://machshuttle.hayho.org/api/bookings/detail/" + bookingId)
+          .then(function (res) {
+            return res.json();
+          })
+          .then(function (data) {
+            loadingEl.style.display = "none";
+            if (!data.success || !data.data) {
+              errorEl.textContent =
+                data.message || "Could not load booking detail.";
+              errorEl.style.display = "block";
+              return;
+            }
+            const d = data.data;
+            function row(label, value) {
+              if (value == null || value === "") return "";
+              return (
+                '<div class="row-item"><strong>' +
+                label +
+                "</strong><span>" +
+                value +
+                "</span></div>"
+              );
+            }
+            function formatDate(str) {
+              if (!str) return "";
+              var date = new Date(str);
+              var mm = String(date.getMonth() + 1).padStart(2, "0");
+              var dd = String(date.getDate()).padStart(2, "0");
+              var yyyy = date.getFullYear();
+              var h = date.getHours();
+              var m = String(date.getMinutes()).padStart(2, "0");
+              var ampm = h >= 12 ? "PM" : "AM";
+              var h12 = h % 12 || 12;
+              return (
+                mm + "/" + dd + "/" + yyyy + ", " + h12 + ":" + m + " " + ampm
+              );
+            }
+            var html = "";
+            html += row("Booking ID", d.id || d.bookingId || bookingId);
+            html += row(
+              "Customer",
+              d.customerName ||
+                d.fullName ||
+                (d.firstName && d.lastName
+                  ? d.firstName + " " + d.lastName
+                  : "")
+            );
+            html += row("Phone", d.phone);
+            html += row("Email", d.email);
+            html += row("Pick up", d.pickupLocation || d.pickup);
+            html += row("Drop off", d.dropoffLocation || d.dropoff);
+            if (d.dropoffPoints && d.dropoffPoints.length) {
+              html += row(
+                "Drop off",
+                d.dropoffPoints
+                  .map(function (p) {
+                    return p.location || p.address;
+                  })
+                  .join(" – ")
+              );
+            }
+            html += row(
+              "Date of Service",
+              d.pickupDateTime
+                ? formatDate(d.pickupDateTime)
+                : d.pickupDate && d.pickupTime
+                ? d.pickupDate + " " + d.pickupTime
+                : ""
+            );
+            if (d.returnPickupDateTime) {
+              html += row("Return", formatDate(d.returnPickupDateTime));
+            }
+            html += row("Vehicle", d.carName || d.vehicleName);
+            if (d.totalPrice != null) {
+              var total =
+                typeof d.totalPrice === "number"
+                  ? "$" + d.totalPrice.toLocaleString()
+                  : d.totalPrice;
+              html +=
+                '<div class="row-item total-row"><strong>Total</strong><span>' +
+                total +
+                "</span></div>";
+            }
+            contentEl.innerHTML =
+              html || "<p class='text-muted'>No details</p>";
+            detailEl.style.display = "block";
+          })
+          .catch(function (err) {
+            loadingEl.style.display = "none";
+            errorEl.textContent = "Could not load booking detail.";
+            errorEl.style.display = "block";
+          });
+      })();
+    </script>
   </body>
 </html>

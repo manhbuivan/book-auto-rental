@@ -326,7 +326,8 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.origin + "/";
       const payload = {
         bookingId,
-        successUrl: baseUrl + "success.html",
+        successUrl:
+          baseUrl + "success.html?booking_id=" + encodeURIComponent(bookingId),
         cancelUrl: baseUrl + "fail.html",
       };
       const res = await fetch(
