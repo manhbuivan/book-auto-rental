@@ -353,6 +353,17 @@ h2.fw-bold {
   transform: translateY(-1px);
 }
 
+/* Link dùng .btn-main (vd: success/fail page) */
+a.btn-main {
+  text-decoration: none;
+  color: #000;
+  box-sizing: border-box;
+}
+
+a.btn-main:hover {
+  color: #000;
+}
+
 /* === Container cho Toggle và Button === */
 .footer-actions {
   display: flex;

@@ -309,7 +309,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await res.json();
 
       if (data.success) {
-        paymentBooking(data.data, "https://machshuttle.hayho.org/");
+        paymentBooking(data.data);
       } else {
         alert(data.message || "Booking failed!");
       }
@@ -318,12 +318,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  async function paymentBooking(bookingId = 0, url = "") {
+  async function paymentBooking(bookingId = 0) {
     try {
+      const baseUrl =
+        window.location.origin +
+          window.location.pathname.replace(/[^/]*$/, "") ||
+        window.location.origin + "/";
       const payload = {
         bookingId,
-        successUrl: url,
-        cancelUrl: url,
+        successUrl: baseUrl + "success.html",
+        cancelUrl: baseUrl + "fail.html",
       };
       const res = await fetch(
         "https://machshuttle.hayho.org/api/payments/stripe/booking/checkout",
