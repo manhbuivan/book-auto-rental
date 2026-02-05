@@ -366,10 +366,11 @@ document.addEventListener("DOMContentLoaded", () => {
         promotionCode: car.promotionCode || "",
         discountAmount: car.discountAmount || 0,
         finalPrice: car.finalPrice || 0,
+        adminFee: car.adminFee || 0,
       });
       container.innerHTML += `
-      <label class="car-card-item" data-car-id="${
-        car.id
+      <label class="car-card-item" data-car-id="${car.id}" data-admin-fee="${
+        car.adminFee || 0
       }" data-car-data='${carDataJson}'>
         <div class="item-left">
           <input type="radio" name="selectedCar" class="car-checkbox" ${
@@ -472,7 +473,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (selectedCarRadio) {
       const carCard = selectedCarRadio.closest(".car-card-item");
       bookingData.carId = parseInt(carCard.dataset.carId);
-      bookingData.adminFee = carCard.dataset.adminFee || 0;
+      bookingData.adminFee = parseFloat(carCard.dataset.adminFee || 0) || 0;
       const carName = carCard.querySelector(".car-name").textContent;
       const carSeats = carCard.querySelector(".car-details #seats").textContent;
       const carBags = carCard.querySelector(".car-details #bags").textContent;
@@ -514,10 +515,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const subtotalElem = step3Content.querySelector("#subtotalPrice");
       if (subtotalElem) subtotalElem.textContent = carPrice;
       const childSeatPrice = step3Content.querySelector("#childSeatPrice");
+      const childSeatCost = bookingData.childSeats * 15;
       if (childSeatPrice)
-        childSeatPrice.textContent = formattedPrice(
-          bookingData.childSeats * 15
-        );
+        childSeatPrice.textContent = formattedPrice(childSeatCost || 0);
       const adminFee = step3Content.querySelector("#adminFee");
       if (adminFee)
         adminFee.textContent = formattedPrice(bookingData.adminFee || 0);
@@ -527,7 +527,8 @@ document.addEventListener("DOMContentLoaded", () => {
         boosterSeatPrice.textContent = formattedPrice(boosterSeat || 0);
 
       const subtotal = parseFloat(carPrice.replace(/[$,]/g, ""));
-      const total = subtotal + boosterSeat;
+      const total =
+        subtotal + childSeatCost + boosterSeat + bookingData.adminFee;
       bookingData.totalPrice = total;
 
       const totalElem = step3Content.querySelector("#totalPrice");
