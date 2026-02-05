@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
     pickupTime: "",
     returnPickupDateTime: "",
     numberOfPassengers: 0,
-    // childSeats: 0,
+    childSeats: 0,
     boosterSeats: 0,
     isRoundTrip: false,
     promotionCode: "",
@@ -233,7 +233,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const payload = {
         passengers: bookingData.numberOfPassengers,
-        // childSeats: bookingData.childSeats,
+        childSeats: bookingData.childSeats,
         boosterSeats: bookingData.boosterSeats,
         distance: distances.distance,
         pickupDistance: distances.pickupDistance,
@@ -283,7 +283,7 @@ document.addEventListener("DOMContentLoaded", () => {
         pickupDateTime: bookingData.pickupDateTime,
         returnPickupDateTime: bookingData.returnPickupDateTime,
         numberOfPassengers: bookingData.numberOfPassengers,
-        // childSeats: bookingData.childSeats,
+        childSeats: bookingData.childSeats,
         boosterSeats: bookingData.boosterSeats,
         isRoundTrip: bookingData.isRoundTrip,
         promotionCode: bookingData.promotionCode,
@@ -498,6 +498,16 @@ document.addEventListener("DOMContentLoaded", () => {
       if (step3CarBags)
         step3CarBags.innerHTML = `<img src="assests/svg/bag.svg" />${carBags}`;
 
+      // Update description "Carries up to X passengers."
+      const step3CarDesc = step3Content.querySelector(".car-card .car-desc");
+      if (step3CarDesc && carSeats) {
+        const seatsMatch = carSeats.match(/\d+/);
+        const seatsNumber = seatsMatch ? seatsMatch[0] : null;
+        if (seatsNumber) {
+          step3CarDesc.textContent = `Carries up to ${seatsNumber} passengers.`;
+        }
+      }
+
       // Update subtotal
       const subtotalElem = step3Content.querySelector("#subtotalPrice");
       if (subtotalElem) subtotalElem.textContent = carPrice;
@@ -599,8 +609,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Lưu dữ liệu step 1
       bookingData.numberOfPassengers =
         parseInt(document.getElementById("passengersInput").value) || 0;
-      // bookingData.childSeats =
-      //   parseInt(document.getElementById("childSeatInput").value) || 0;
+
       bookingData.boosterSeats =
         parseInt(document.getElementById("boosterSeatInput").value) || 0;
       bookingData.airline =
