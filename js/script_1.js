@@ -4,9 +4,9 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentStep = 0;
   let selectedLocations = {
     startPoint: {
-      lat: 38.8977,
-      lng: -77.0365,
-      address: "The White House, 1600 Pennsylvania Avenue NW, Washington, DC",
+      lat: 33.709, // Tọa độ Fountain Valley, CA
+      lng: -117.9544,
+      address: "Fountain Valley, CA 92708, USA",
     },
     pickup: null,
     dropoffs: [],
@@ -120,10 +120,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   async function calculateTotalDistances() {
+    // 1. Kiểm tra đầu vào
     if (!selectedLocations.pickup || selectedLocations.dropoffs.length === 0) {
       return { distance: 0, pickupDistance: 0, returnDistance: 0 };
     }
-    // API địa điểm mới chỉ trả về place_id + description, không có lat/lng
     if (
       selectedLocations.pickup.lat == null ||
       selectedLocations.pickup.lng == null
@@ -131,31 +131,31 @@ document.addEventListener("DOMContentLoaded", () => {
       return { distance: 0, pickupDistance: 0, returnDistance: 0 };
     }
 
-    let totalDistance = 0;
-    let pickupDistance = 0;
-    let returnDistance = 0;
+    // --- ĐỊNH NGHĨA LẠI BIẾN ---
+    let garageToPickupDist = 0; // (pickupDistance): Từ Bãi xe -> Điểm đón
+    let customerTripDist = 0; // (distance): Từ Điểm đón -> Điểm trả (Khách ngồi trên xe)
+    let returnTripDist = 0; // (returnDistance): Chiều về (nếu có)
 
-    // Calculate startPoint (White House) to pickup
-    const startToPickup = await calculateDistanceGoogle(
+    // 2. Tính: Bãi xe (Garage) -> Điểm đón (Pickup)
+    // Đây chính là "pickupDistance" mà API cần
+    garageToPickupDist = await calculateDistanceGoogle(
       selectedLocations.startPoint.lat,
       selectedLocations.startPoint.lng,
       selectedLocations.pickup.lat,
       selectedLocations.pickup.lng
     );
 
-    totalDistance += startToPickup;
-
-    // Calculate pickup to first dropoff
-    pickupDistance = await calculateDistanceGoogle(
+    // 3. Tính: Điểm đón (Pickup) -> Điểm trả đầu tiên (Dropoff 1)
+    // Bắt đầu tính vào "distance" (quãng đường khách đi)
+    const firstLeg = await calculateDistanceGoogle(
       selectedLocations.pickup.lat,
       selectedLocations.pickup.lng,
       selectedLocations.dropoffs[0].lat,
       selectedLocations.dropoffs[0].lng
     );
+    customerTripDist += firstLeg;
 
-    totalDistance += pickupDistance;
-
-    // Calculate distances between dropoff points
+    // 4. Tính: Các điểm trả khách tiếp theo (nếu có)
     for (let i = 0; i < selectedLocations.dropoffs.length - 1; i++) {
       const dist = await calculateDistanceGoogle(
         selectedLocations.dropoffs[i].lat,
@@ -163,27 +163,37 @@ document.addEventListener("DOMContentLoaded", () => {
         selectedLocations.dropoffs[i + 1].lat,
         selectedLocations.dropoffs[i + 1].lng
       );
-      totalDistance += dist;
+      customerTripDist += dist;
     }
 
-    // If round trip, calculate return distance (last dropoff back to pickup)
+    // 5. Tính: Chiều về (Round Trip)
     const isRoundTrip = document.getElementById("roundTrip")?.checked || false;
     if (isRoundTrip && selectedLocations.dropoffs.length > 0) {
       const lastDropoff =
         selectedLocations.dropoffs[selectedLocations.dropoffs.length - 1];
-      returnDistance = await calculateDistanceGoogle(
+      returnTripDist = await calculateDistanceGoogle(
         lastDropoff.lat,
         lastDropoff.lng,
         selectedLocations.pickup.lat,
         selectedLocations.pickup.lng
       );
-      totalDistance += returnDistance;
     }
 
+    // Log kiểm tra
+    console.log("--- KẾT QUẢ TÍNH TOÁN ---");
+    console.log(
+      "1. Garage -> Pickup (pickupDistance):",
+      garageToPickupDist,
+      "miles"
+    );
+    console.log("2. Pickup -> Dropoff (distance):", customerTripDist, "miles");
+    console.log("3. Return (returnDistance):", returnTripDist, "miles");
+
+    // 6. Trả về đúng key mapping
     return {
-      distance: totalDistance,
-      pickupDistance: pickupDistance,
-      returnDistance: returnDistance,
+      distance: customerTripDist.toFixed(2), // <--- Đây là quãng đường khách đi (10 miles)
+      pickupDistance: garageToPickupDist.toFixed(2), // <--- Đây là quãng đường xe chạy đến đón (1000+ miles)
+      returnDistance: returnTripDist.toFixed(2), // <--- Chiều về
     };
   }
 
