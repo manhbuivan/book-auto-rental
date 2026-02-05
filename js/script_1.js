@@ -214,15 +214,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
-  // Click vào step indicator để chuyển đến step đó
-  steps.forEach((stepEl, index) => {
-    stepEl.style.cursor = "pointer";
-    stepEl.addEventListener("click", () => {
-      currentStep = index;
-      showStep(currentStep);
-    });
-  });
-
   // ============== API Calls ================
   async function callFindCarsBySeatsAPI() {
     try {

@@ -94,12 +94,6 @@ h2.fw-bold {
   align-items: center;
   text-align: center;
   min-width: 100px;
-  cursor: pointer;
-  transition: opacity 0.2s ease;
-}
-
-.step:hover {
-  opacity: 0.9;
 }
 
 .step p {
