@@ -3,27 +3,27 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Book Auto Rental</title>
+    <title>Transportation Service</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     />
     <link
       href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="css/style.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-    />
   </head>
   <body class="bg-dark d-flex align-items-center justify-content-center vh-100">
     <!-- Popup Container -->
     <div class="booking-popup rounded-4 shadow-lg text-light">
       <div class="text-center mb-4">
-        <small class="text-warning">RENT NOW</small>
-        <h2 class="fw-bold">Book Auto Rental</h2>
+        <small class="text-warning">BOOK NOW</small>
+        <h2 class="fw-bold">Transportation Service</h2>
       </div>
 
       <!-- Step Progress -->
@@ -88,8 +88,8 @@
                     type="text"
                     class="form-control dropoff-input"
                     placeholder="Enter Address, Point of Interest or Airpod Code"
-                    id="dropoffInput0"
                     autocomplete="off"
+                    id="dropoffInput0"
                   />
                   <div
                     id="dropoffDropdown0"
@@ -112,7 +112,6 @@
               type="date"
               id="fromDateInput"
               class="form-control custom-input"
-              autocomplete="off"
             />
           </div>
           <div class="col-md-4">
@@ -123,24 +122,20 @@
               type="time"
               id="fromTimeInput"
               class="form-control custom-input"
-              autocomplete="off"
             />
           </div>
-          <div class="empty col-md-4"></div>
           <div class="col-md-4">
             <label class="form-label text-light">
-              Airline
+              Airline - Flight numbers
               <!--<span class="text-danger">*</span>-->
             </label>
             <input
               type="text"
               class="form-control custom-input"
-              placeholder="Airline"
+              placeholder="Delta Airlines - DA123"
               id="airlineInput"
-              autocomplete="off"
             />
           </div>
-          <div class="empty2 col-md-4"></div>
           <!-- Seats -->
           <div class="col-md-4">
             <label class="form-label text-light">
@@ -152,13 +147,10 @@
               min="1"
               placeholder="Number"
               id="passengersInput"
-              autocomplete="off"
             />
           </div>
-          <!-- <div class="col-md-4">
-            <label class="form-label text-light">
-              Child seat
-            </label>
+          <div class="col-md-4">
+            <label class="form-label text-light"> Child Seat (+$15) </label>
             <input
               type="number"
               class="form-control custom-input"
@@ -166,16 +158,7 @@
               placeholder="Number"
               id="childSeatInput"
             />
-          </div> -->
-          <!-- <div class="col-md-3">
-            <label class="form-label text-light">Car seat (+15$)</label>
-            <input
-              type="number"
-              class="form-control custom-input"
-              min="0"
-              placeholder="Number"
-            />
-          </div> -->
+          </div>
           <div class="col-md-4">
             <label class="form-label text-light">Booster seat (+$10)</label>
             <input
@@ -184,7 +167,6 @@
               min="0"
               placeholder="Number"
               id="boosterSeatInput"
-              autocomplete="off"
             />
           </div>
 
@@ -202,7 +184,7 @@
       <!-- Step 2 -->
       <div class="step-content step-2">
         <div class="row g-4-5">
-          <div class="col-md-3">
+          <div class="col-md-4">
             <label class="form-label text-light">
               First Name <span class="text-danger">*</span>
             </label>
@@ -211,10 +193,9 @@
               class="form-control custom-input"
               placeholder="First Name"
               id="firstNameInput"
-              autocomplete="off"
             />
           </div>
-          <div class="col-md-3">
+          <div class="col-md-4">
             <label class="form-label text-light">
               Last Name <span class="text-danger">*</span>
             </label>
@@ -223,22 +204,9 @@
               class="form-control custom-input"
               placeholder="Last Name"
               id="lastNameInput"
-              autocomplete="off"
             />
           </div>
-          <div class="col-md-3">
-            <label class="form-label text-light"
-              >Email <span class="text-danger">*</span></label
-            >
-            <input
-              type="text"
-              class="form-control custom-input"
-              placeholder="Your Email"
-              id="emailInput"
-              autocomplete="off"
-            />
-          </div>
-          <div class="col-md-3">
+          <div class="col-md-4">
             <label class="form-label text-light"
               >Phone Number <span class="text-danger">*</span></label
             >
@@ -247,10 +215,30 @@
               class="form-control custom-input"
               placeholder="Phone Number"
               id="phoneInput"
-              autocomplete="off"
             />
           </div>
-
+          <div class="col-md-6">
+            <label class="form-label text-light"
+              >Email <span class="text-danger">*</span></label
+            >
+            <input
+              type="text"
+              class="form-control custom-input"
+              placeholder="Your Email"
+              id="emailInput"
+            />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label text-light"
+              >Confirm Your Email<span class="text-danger">*</span></label
+            >
+            <input
+              type="text"
+              class="form-control custom-input"
+              placeholder="Confirm Your Email"
+              id="emailInput"
+            />
+          </div>
           <!-- Card car -->
           <div class="car-card-container" id="carList"></div>
 
@@ -274,22 +262,23 @@
           <div class="order-user">
             <div class="user-left">
               <p id="fullName" style="font-size: 15px; color: #fff">
-                <strong>Oscar Nguyen</strong>
+                <strong>Mach Shuttle</strong>
               </p>
-              <p id="phone"><img src="assests/svg/phone.svg" /> 0763661616</p>
+              <p id="phone"><img src="assests/svg/phone.svg" /> 714-643-2220</p>
               <p id="email">
-                <img src="assests/svg/mail.svg" /> david4792@gmail.com
+                <img src="assests/svg/mail.svg" />
+                service@machshuttle.com
               </p>
             </div>
             <div class="user-right">
               <p id="pickupLocation">
-                <strong class="text-pickup">Pick up location:</strong>
+                <strong class="text-pickup">Pick up location: </strong> Choose
               </p>
               <p id="dropoffLocation">
-                <strong class="text-pickup">Drop off location:</strong>
+                <strong class="text-pickup">Drop off location:</strong> Choose
               </p>
               <p id="pickupDate">
-                <strong class="text-pickup">Date of Service:</strong>
+                <strong class="text-pickup">Date of Service:</strong> Choose
               </p>
               <p id="roundTripText"></p>
             </div>
@@ -303,13 +292,13 @@
               <img src="assests/png/urus_1.png" alt="Lamborghini Urus" />
             </div>
             <div class="car-info">
-              <h3 class="car-name">Lamborghini Urus</h3>
+              <h3 class="car-name">Choose Car</h3>
               <div class="car-details">
-                <span><img src="assests/svg/seat.svg" />4 Seats</span>
+                <span><img src="assests/svg/seat.svg" />... Seats</span>
                 <span><img src="assests/svg/auto.svg" />Auto</span>
-                <span><img src="assests/svg/bag.svg" />2 Bags</span>
+                <span><img src="assests/svg/bag.svg" />... Bags</span>
               </div>
-              <p class="car-desc">Carries up to 4 passengers.</p>
+              <p class="car-desc">Carries up to ... passengers.</p>
             </div>
           </div>
 
@@ -319,7 +308,13 @@
               <span>Subtotal</span><span id="subtotalPrice">$0</span>
             </div>
             <div class="price-row">
+              <span>Child seat</span><span id="childSeatPrice">$0</span>
+            </div>
+            <div class="price-row">
               <span>Booster seat</span><span id="boosterSeatPrice">$0</span>
+            </div>
+            <div class="price-row">
+              <span>Admin fee</span><span id="adminFee">$0</span>
             </div>
             <div class="price-row discount">
               <span>Discount</span><span id="discountAmount">-$0</span>
@@ -344,9 +339,50 @@
         <div class="footer-actions">
           <div>
             <input type="checkbox" id="acceptTerm" class="custom-checkbox" />
-            <label for="acceptTerm">&nbsp;&nbsp; I accept the Terms</label>
-          </div>
+            <label for="acceptTerm"
+              >&nbsp;&nbsp; I accept the Terms
+              <span class="info-icon" onclick="openTerms()">i</span></label
+            >
+            <div id="termsModal" class="terms-modal">
+              <div class="terms-content">
+                <span class="close" onclick="closeTerms()">×</span>
+                <h3 style="color: #f5b754">Terms & Conditions</h3>
 
+                <p>
+                  MachShuttle’s mission is to offer our customers the finest
+                  quality shuttle/ car service available with competitive
+                  prices. At MachShuttle we take pride in our punctuality and
+                  personable drivers.<br />
+                  We are 100% customer service driven.<br />
+                  We hope you don’t need to cancel our services. However, things
+                  do happen so if you need to cancel your reservation we require
+                  that you do so at least 24 hours in advance, otherwise you
+                  will be charged for the full amount of your trip. Please call
+                  (714) 643-2220 or email us
+                </p>
+
+                <p>
+                  View more...
+                  <a
+                    style="color: #f5b754"
+                    href="https://machshuttle.nbcuong.com/term-of-use/"
+                    target="_blank"
+                  >
+                    Terms and Conditions for Use
+                  </a>
+                </p>
+              </div>
+            </div>
+          </div>
+          <script>
+            function openTerms() {
+              document.getElementById("termsModal").style.display = "block";
+            }
+
+            function closeTerms() {
+              document.getElementById("termsModal").style.display = "none";
+            }
+          </script>
           <div class="btn-group" style="margin-top: 0">
             <button class="btn-main" id="backBtn2">
               <img src="assests/svg/arrow.svg" style="margin-right: 10px" />

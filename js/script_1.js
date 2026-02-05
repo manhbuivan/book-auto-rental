@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
     numberOfPassengers: 0,
     childSeats: 0,
     boosterSeats: 0,
+    adminFee: 0,
     isRoundTrip: false,
     promotionCode: "",
     pickupDistance: 0,
@@ -471,6 +472,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (selectedCarRadio) {
       const carCard = selectedCarRadio.closest(".car-card-item");
       bookingData.carId = parseInt(carCard.dataset.carId);
+      bookingData.adminFee = carCard.dataset.adminFee || 0;
       const carName = carCard.querySelector(".car-name").textContent;
       const carSeats = carCard.querySelector(".car-details #seats").textContent;
       const carBags = carCard.querySelector(".car-details #bags").textContent;
@@ -511,6 +513,14 @@ document.addEventListener("DOMContentLoaded", () => {
       // Update subtotal
       const subtotalElem = step3Content.querySelector("#subtotalPrice");
       if (subtotalElem) subtotalElem.textContent = carPrice;
+      const childSeatPrice = step3Content.querySelector("#childSeatPrice");
+      if (childSeatPrice)
+        childSeatPrice.textContent = formattedPrice(
+          bookingData.childSeats * 15
+        );
+      const adminFee = step3Content.querySelector("#adminFee");
+      if (adminFee)
+        adminFee.textContent = formattedPrice(bookingData.adminFee || 0);
       const boosterSeatPrice = step3Content.querySelector("#boosterSeatPrice");
       const boosterSeat = bookingData.boosterSeats * 10;
       if (boosterSeatPrice)
@@ -609,7 +619,8 @@ document.addEventListener("DOMContentLoaded", () => {
       // Lưu dữ liệu step 1
       bookingData.numberOfPassengers =
         parseInt(document.getElementById("passengersInput").value) || 0;
-
+      bookingData.childSeats =
+        parseInt(document.getElementById("childSeatInput").value) || 0;
       bookingData.boosterSeats =
         parseInt(document.getElementById("boosterSeatInput").value) || 0;
       bookingData.airline =
