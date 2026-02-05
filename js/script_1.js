@@ -92,7 +92,6 @@ document.addEventListener("DOMContentLoaded", () => {
   async function calculateDistanceGoogle(lat1, lng1, lat2, lng2) {
     try {
       const service = new google.maps.DistanceMatrixService();
-
       return new Promise((resolve) => {
         service.getDistanceMatrix(
           {
@@ -530,6 +529,32 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
+    // Pickup: phải chọn từ dropdown, không chỉ nhập text
+    const pickupInput = document.getElementById("pickupInput");
+    if (pickupInput?.value.trim() && !selectedLocations.pickup) {
+      pickupInput.classList.add("is-invalid");
+      valid = false;
+    } else if (pickupInput && selectedLocations.pickup) {
+      pickupInput.classList.remove("is-invalid");
+    }
+
+    // Dropoff: mỗi ô có text thì phải chọn từ dropdown
+    const dropoffItems = document.querySelectorAll(
+      "#dropoffList .dropoff-item"
+    );
+    dropoffItems.forEach((item, index) => {
+      const input = item.querySelector(".dropoff-input");
+      if (!input) return;
+      const hasValue = input.value.trim();
+      const hasSelected = selectedLocations.dropoffs[index] != null;
+      if (hasValue && !hasSelected) {
+        input.classList.add("is-invalid");
+        valid = false;
+      } else if (hasSelected) {
+        input.classList.remove("is-invalid");
+      }
+    });
+
     // Validate return date/time if round trip
     const isRoundTrip = document.getElementById("roundTrip").checked;
     if (isRoundTrip) {
@@ -877,6 +902,7 @@ document.addEventListener("DOMContentLoaded", () => {
         class="form-control dropoff-input"
         id="dropoffInput${index}"
         placeholder="Enter Address, Point of Interest or Airport Code"
+        autocomplete="off"
       />
       <div id="dropoffDropdown${index}" class="autocomplete-dropdown"></div>
     </div>
@@ -951,7 +977,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const text = await res.text();
       const data = JSON.parse(text);
       if (!Array.isArray(data)) return [];
-
+      console.log(`[debug - data]: `, data);
       return data.map((item) => ({
         address: item.description || item,
         place_id: item.place_id || "",
@@ -1010,8 +1036,10 @@ document.addEventListener("DOMContentLoaded", () => {
           // Save location (dùng object đã có lat/lng + place_id nếu geocode thành công)
           if (input.id === "pickupInput") {
             selectedLocations.pickup = chosen;
+            input.classList.remove("is-invalid");
           } else if (dropoffIndex !== null) {
             selectedLocations.dropoffs[dropoffIndex] = chosen;
+            input.classList.remove("is-invalid");
           }
         };
       });
@@ -1020,10 +1048,20 @@ document.addEventListener("DOMContentLoaded", () => {
     input.addEventListener("input", handleSearch);
     input.addEventListener("focus", handleSearch);
 
-    // Clear saved location if input changes manually
+    // Clear dropdown on blur; nếu có text nhưng chưa chọn từ list → đánh dấu đỏ ngay
     input.addEventListener("blur", () => {
       setTimeout(() => {
         dropdown.innerHTML = "";
+        const hasValue = input.value.trim();
+        if (input.id === "pickupInput") {
+          if (hasValue && !selectedLocations.pickup) {
+            input.classList.add("is-invalid");
+          }
+        } else if (dropoffIndex !== null) {
+          if (hasValue && !selectedLocations.dropoffs[dropoffIndex]) {
+            input.classList.add("is-invalid");
+          }
+        }
       }, 200);
     });
   }
